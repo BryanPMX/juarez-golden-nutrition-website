@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Golden Nutrition">
+  <rect width="64" height="64" rx="12" fill="#0A0A0A"/>
+  <path d="M16 38c9 10 23 10 32 0-5 15-27 15-32 0Z" fill="#C9A84C"/>
+  <path d="M32 10c8 7 9 18 0 25-9-7-8-18 0-25Z" fill="#5EA46B"/>
+  <circle cx="32" cy="41" r="5" fill="#F0D078"/>
+</svg>

@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Montserrat:wght@600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #ffffff;
+  background: #0a0a0a;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(201, 168, 76, 0.18), transparent 30rem),
+    linear-gradient(180deg, #0a0a0a 0%, #111111 40%, #0a0a0a 100%);
+  font-family: 'DM Sans', system-ui, sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: rgba(201, 168, 76, 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.section-shell {
+  @apply mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24;
+}
+
+.eyebrow {
+  @apply font-label text-xs font-bold uppercase tracking-[0.18em] text-gold;
+}
+
+.focus-ring {
+  @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold-light;
+}
+
+.glass-panel {
+  background: linear-gradient(145deg, rgba(26, 26, 26, 0.92), rgba(10, 10, 10, 0.78));
+  border: 1px solid rgba(240, 208, 120, 0.16);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+}
+
+@layer components {
+  .field {
+    @apply focus-ring w-full rounded-lg border border-white/10 bg-white/[0.06] px-4 py-3 text-white outline-none transition placeholder:text-white/40 focus:border-gold/70;
+  }
+
+  .field option {
+    color: #0a0a0a;
+  }
+}
