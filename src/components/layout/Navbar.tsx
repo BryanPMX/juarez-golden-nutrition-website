@@ -30,9 +30,11 @@ export const Navbar = () => {
           onClick={() => handleNav('home')}
           aria-label="Golden Nutrition home"
         >
-          <span className="grid h-11 w-11 place-items-center rounded-full border border-gold/40 bg-gold/10 font-display text-xl font-bold text-gold">
-            GN
-          </span>
+          <img
+            src="/golden-nutrition-logo.jpeg"
+            alt="Golden Nutrition"
+            className="h-12 w-12 rounded-lg border border-gold/30 object-cover shadow-lg shadow-black/25 sm:h-14 sm:w-14"
+          />
           <span className="hidden text-left sm:block">
             <span className="block font-display text-xl font-bold leading-none text-white">Golden Nutrition</span>
             <span className="text-xs uppercase tracking-[0.2em] text-gold">Ciudad Juarez</span>
