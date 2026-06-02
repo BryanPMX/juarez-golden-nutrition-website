@@ -80,6 +80,11 @@ export const resources = {
         deliveryMapElPaso: 'El Paso TX',
         deliveryMapBorder: 'Rio Grande',
         deliveryOpenMap: 'Abrir en Maps',
+        deliveryOverview: {
+          title: 'Vista completa',
+          label: 'Zonas iluminadas',
+          copy: 'Empieza con el mapa completo de Ciudad Juarez y El Paso. Toca una zona iluminada para enfocar esa cobertura.',
+        },
         deliveryAreas: {
           juarez: {
             title: 'Ciudad Juarez',
@@ -184,6 +189,11 @@ export const resources = {
         deliveryMapElPaso: 'El Paso TX',
         deliveryMapBorder: 'Rio Grande',
         deliveryOpenMap: 'Open in Maps',
+        deliveryOverview: {
+          title: 'Full coverage',
+          label: 'Illuminated zones',
+          copy: 'Start with the full Ciudad Juarez and El Paso map. Tap an illuminated zone to focus that coverage area.',
+        },
         deliveryAreas: {
           juarez: {
             title: 'Ciudad Juarez',
