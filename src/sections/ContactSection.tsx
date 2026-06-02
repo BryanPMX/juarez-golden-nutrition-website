@@ -1,6 +1,6 @@
 import { Building2, Crosshair, ExternalLink, Mail, MapPin, Navigation, Phone, Route } from 'lucide-react';
-import { useState } from 'react';
-import type { ReactNode } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import type { ReactNode, RefObject } from 'react';
 import type { LucideIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -115,6 +115,8 @@ export const ContactSection = () => {
 const DeliveryArea = () => {
   const { t } = useTranslation();
   const [activeView, setActiveView] = useState<DeliveryViewId>('overview');
+  const mapFrameRef = useRef<HTMLDivElement>(null);
+  const mapSize = useElementSize(mapFrameRef);
   const selectedArea = activeView === 'overview' ? null : deliveryAreas.find((area) => area.id === activeView) ?? deliveryAreas[0];
   const mapView = selectedArea ?? deliveryOverview;
   const SelectedAreaIcon = mapView.icon;
@@ -174,7 +176,10 @@ const DeliveryArea = () => {
           </div>
         </div>
 
-        <div className="relative order-1 min-h-[25rem] border-b border-white/10 bg-ink/70 sm:min-h-[28rem] lg:order-2 lg:min-h-[32rem] lg:border-b-0 lg:border-l">
+        <div
+          ref={mapFrameRef}
+          className="relative order-1 min-h-[25rem] border-b border-white/10 bg-ink/70 sm:min-h-[28rem] lg:order-2 lg:min-h-[32rem] lg:border-b-0 lg:border-l"
+        >
           <iframe
             key={mapView.id}
             title={`${t(mapView.titleKey)} Google Maps`}
@@ -187,21 +192,26 @@ const DeliveryArea = () => {
           <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(180deg,rgba(10,10,10,0.38)_0%,rgba(10,10,10,0.04)_28%,rgba(10,10,10,0.06)_62%,rgba(10,10,10,0.64)_100%)]" />
           <div className="absolute inset-0 pointer-events-none ring-1 ring-inset ring-white/10" />
           {activeView === 'overview' ? (
-            <div className="absolute inset-x-4 top-12 h-[calc(100%-11rem)] sm:inset-x-6 sm:h-[calc(100%-12rem)]" aria-label={t('contact.deliveryZoneLabel')}>
-              {deliveryAreas.map((area) => (
-                <button
-                  key={area.id}
-                  type="button"
-                  data-testid={`delivery-zone-${area.id}`}
-                  className={`focus-ring group absolute z-10 grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center opacity-95 transition hover:scale-[1.04] ${area.zoneClass}`}
-                  onClick={() => setActiveView(area.id)}
-                  aria-label={t(area.mapLabelKey)}
-                >
-                  <span className="absolute h-20 w-20 rounded-full border border-current/25 bg-current/10 shadow-[0_0_32px_rgba(255,255,255,0.18)] transition group-hover:scale-110 sm:h-24 sm:w-24" />
-                  <span className="absolute h-9 w-9 rounded-full border border-current/45 bg-ink/80 shadow-2xl backdrop-blur-md" />
-                  <span className="relative h-3 w-3 rounded-full bg-current" />
-                </button>
-              ))}
+            <div className="absolute inset-0" aria-label={t('contact.deliveryZoneLabel')}>
+              {deliveryAreas.map((area) => {
+                const markerPosition = getDeliveryMarkerPosition(deliveryOverview, area, mapSize);
+
+                return (
+                  <button
+                    key={area.id}
+                    type="button"
+                    data-testid={`delivery-zone-${area.id}`}
+                    className={`focus-ring group absolute z-10 grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center opacity-95 transition hover:scale-[1.04] ${area.markerClass}`}
+                    style={{ left: `${markerPosition.left}%`, top: `${markerPosition.top}%` }}
+                    onClick={() => setActiveView(area.id)}
+                    aria-label={t(area.mapLabelKey)}
+                  >
+                    <span className="absolute h-20 w-20 rounded-full border border-current/25 bg-current/10 shadow-[0_0_32px_rgba(255,255,255,0.18)] transition group-hover:scale-110 sm:h-24 sm:w-24" />
+                    <span className="absolute h-9 w-9 rounded-full border border-current/45 bg-ink/80 shadow-2xl backdrop-blur-md" />
+                    <span className="relative h-3 w-3 rounded-full bg-current" />
+                  </button>
+                );
+              })}
             </div>
           ) : null}
           <div className="absolute bottom-4 left-4 w-[calc(100%-2rem)] rounded-lg border border-white/10 bg-ink/90 p-3 backdrop-blur sm:bottom-6 sm:left-6 sm:w-80 sm:p-4">
@@ -236,6 +246,11 @@ const DeliveryArea = () => {
 type DeliveryAreaId = 'juarez' | 'westElPaso' | 'centralElPaso';
 type DeliveryViewId = 'overview' | DeliveryAreaId;
 
+type MapSize = {
+  width: number;
+  height: number;
+};
+
 type DeliveryMapView = {
   id: DeliveryViewId;
   titleKey: string;
@@ -262,7 +277,7 @@ const deliveryAreas: (DeliveryMapView & {
   id: DeliveryAreaId;
   mapLabelKey: string;
   mapsLink: string;
-  zoneClass: string;
+  markerClass: string;
 })[] = [
   {
     id: 'juarez',
@@ -275,7 +290,7 @@ const deliveryAreas: (DeliveryMapView & {
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Ciudad+Juarez+Chihuahua+Mexico',
     center: '31.6904,-106.4245',
     zoom: 11,
-    zoneClass: 'left-[62%] top-[66%] text-gold-light',
+    markerClass: 'text-gold-light',
   },
   {
     id: 'westElPaso',
@@ -288,7 +303,7 @@ const deliveryAreas: (DeliveryMapView & {
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=West+El+Paso+TX',
     center: '31.8200,-106.5850',
     zoom: 12,
-    zoneClass: 'left-[26%] top-[32%] text-cyan-100',
+    markerClass: 'text-cyan-100',
   },
   {
     id: 'centralElPaso',
@@ -301,9 +316,59 @@ const deliveryAreas: (DeliveryMapView & {
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Central+El+Paso+TX',
     center: '31.7619,-106.4850',
     zoom: 12,
-    zoneClass: 'left-[54%] top-[34%] text-leaf-light',
+    markerClass: 'text-leaf-light',
   },
 ];
+
+const useElementSize = (elementRef: RefObject<HTMLElement>): MapSize => {
+  const [size, setSize] = useState<MapSize>({ width: 0, height: 0 });
+
+  useEffect(() => {
+    const element = elementRef.current;
+    if (!element) return;
+
+    const updateSize = () => {
+      const { width, height } = element.getBoundingClientRect();
+      setSize({ width, height });
+    };
+
+    updateSize();
+
+    const observer = new ResizeObserver(updateSize);
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, [elementRef]);
+
+  return size;
+};
+
+const getDeliveryMarkerPosition = (overview: DeliveryMapView, area: DeliveryMapView, mapSize: MapSize) => {
+  if (!mapSize.width || !mapSize.height) {
+    return { left: 50, top: 50 };
+  }
+
+  const overviewCenter = projectMapCoordinate(overview.center, overview.zoom);
+  const areaCenter = projectMapCoordinate(area.center, overview.zoom);
+
+  return {
+    left: clampPercentage(50 + ((areaCenter.x - overviewCenter.x) / mapSize.width) * 100),
+    top: clampPercentage(50 + ((areaCenter.y - overviewCenter.y) / mapSize.height) * 100),
+  };
+};
+
+const projectMapCoordinate = (coordinates: string, zoom: number) => {
+  const [latitude, longitude] = coordinates.split(',').map(Number);
+  const sinLatitude = Math.sin((latitude * Math.PI) / 180);
+  const scale = 256 * 2 ** zoom;
+
+  return {
+    x: ((longitude + 180) / 360) * scale,
+    y: (0.5 - Math.log((1 + sinLatitude) / (1 - sinLatitude)) / (4 * Math.PI)) * scale,
+  };
+};
+
+const clampPercentage = (value: number) => Math.min(Math.max(value, 8), 92);
 
 const googleMapsEmbedKey = import.meta.env.VITE_GOOGLE_MAPS_EMBED_API_KEY?.trim();
 
