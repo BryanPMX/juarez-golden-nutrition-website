@@ -7,7 +7,6 @@ export const BUSINESS = {
   location: 'Ciudad Juarez, Chihuahua, Mexico',
   hours: 'Lunes a sabado, 8:00 AM - 6:00 PM',
   email: 'hola@goldennutritionjuarez.com',
-  mapsQuery: 'Ciudad Juarez Chihuahua Mexico',
 } as const;
 
 export const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://example.com';
