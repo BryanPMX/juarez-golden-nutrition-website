@@ -1,4 +1,4 @@
-import { Building2, Crosshair, ExternalLink, Mail, MapPin, Navigation, Phone, Route, Truck } from 'lucide-react';
+import { Building2, Crosshair, ExternalLink, Mail, MapPin, Navigation, Phone, Route } from 'lucide-react';
 import { useState } from 'react';
 import type { ReactNode } from 'react';
 import type { LucideIcon } from 'lucide-react';
@@ -124,7 +124,7 @@ const DeliveryArea = () => {
     <section id="delivery-coverage" className="relative mt-8 scroll-mt-24 overflow-hidden rounded-lg border border-gold/25 bg-[#070707] p-0 shadow-gold sm:mt-10">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(240,208,120,0.22),transparent_22rem),radial-gradient(circle_at_76%_24%,rgba(78,180,190,0.18),transparent_24rem),radial-gradient(circle_at_82%_78%,rgba(94,164,107,0.18),transparent_22rem)]" />
       <div className="relative grid gap-0 lg:grid-cols-[0.92fr_1.08fr]">
-        <div className="order-2 flex flex-col justify-between gap-7 p-5 sm:p-8 lg:order-1 lg:p-10">
+        <div className="order-2 flex flex-col justify-between gap-6 p-5 sm:p-8 lg:order-1 lg:p-10">
           <div>
             <p className="eyebrow">{t('contact.deliveryEyebrow')}</p>
             <h3 className="mt-3 font-display text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
@@ -133,56 +133,48 @@ const DeliveryArea = () => {
             <p className="mt-4 max-w-xl text-base leading-7 text-white/72 sm:mt-5 sm:text-lg sm:leading-8">{t('contact.deliveryCopy')}</p>
           </div>
 
-          <div>
-            <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 2xl:grid-cols-3">
-              <DeliveryBadge icon={<Truck className="h-5 w-5" />} label={t('contact.deliveryBadgeOne')} />
-              <DeliveryBadge icon={<Route className="h-5 w-5" />} label={t('contact.deliveryBadgeTwo')} />
-              <DeliveryBadge icon={<Navigation className="h-5 w-5" />} label={t('contact.deliveryBadgeThree')} />
-            </div>
-
-            <div className="mt-5 grid gap-2" aria-label={t('contact.deliveryZoneLabel')}>
+          <div className="grid gap-2" aria-label={t('contact.deliveryZoneLabel')}>
+            <button
+              type="button"
+              data-testid="delivery-overview"
+              className={`focus-ring flex items-center justify-between rounded-lg border px-4 py-3 text-left transition ${
+                activeView === 'overview'
+                  ? 'border-cyan-200/60 bg-cyan-200/[0.12] text-white shadow-gold'
+                  : 'border-white/10 bg-white/[0.04] text-white/72 hover:border-white/25 hover:bg-white/[0.07]'
+              }`}
+              onClick={() => setActiveView('overview')}
+              aria-pressed={activeView === 'overview'}
+            >
+              <span>
+                <span className="block text-sm font-bold">{t(deliveryOverview.titleKey)}</span>
+                <span className="mt-1 block text-xs uppercase tracking-[0.14em] text-white/45">{t(deliveryOverview.labelKey)}</span>
+              </span>
+              <Route className={`h-5 w-5 ${activeView === 'overview' ? 'text-cyan-100' : 'text-white/35'}`} />
+            </button>
+            {deliveryAreas.map((area) => (
               <button
+                key={area.id}
                 type="button"
-                data-testid="delivery-overview"
+                data-testid={`delivery-option-${area.id}`}
                 className={`focus-ring flex items-center justify-between rounded-lg border px-4 py-3 text-left transition ${
-                  activeView === 'overview'
-                    ? 'border-cyan-200/60 bg-cyan-200/[0.12] text-white shadow-gold'
+                  activeView === area.id
+                    ? 'border-gold/70 bg-gold/15 text-white shadow-gold'
                     : 'border-white/10 bg-white/[0.04] text-white/72 hover:border-white/25 hover:bg-white/[0.07]'
                 }`}
-                onClick={() => setActiveView('overview')}
-                aria-pressed={activeView === 'overview'}
+                onClick={() => setActiveView(area.id)}
+                aria-pressed={activeView === area.id}
               >
                 <span>
-                  <span className="block text-sm font-bold">{t(deliveryOverview.titleKey)}</span>
-                  <span className="mt-1 block text-xs uppercase tracking-[0.14em] text-white/45">{t(deliveryOverview.labelKey)}</span>
+                  <span className="block text-sm font-bold">{t(area.titleKey)}</span>
+                  <span className="mt-1 block text-xs uppercase tracking-[0.14em] text-white/45">{t(area.labelKey)}</span>
                 </span>
-                <Route className={`h-5 w-5 ${activeView === 'overview' ? 'text-cyan-100' : 'text-white/35'}`} />
+                <Crosshair className={`h-5 w-5 ${activeView === area.id ? 'text-gold-light' : 'text-white/35'}`} />
               </button>
-              {deliveryAreas.map((area) => (
-                <button
-                  key={area.id}
-                  type="button"
-                  data-testid={`delivery-option-${area.id}`}
-                  className={`focus-ring flex items-center justify-between rounded-lg border px-4 py-3 text-left transition ${
-                    activeView === area.id
-                      ? 'border-gold/70 bg-gold/15 text-white shadow-gold'
-                      : 'border-white/10 bg-white/[0.04] text-white/72 hover:border-white/25 hover:bg-white/[0.07]'
-                  }`}
-                  onClick={() => setActiveView(area.id)}
-                  aria-pressed={activeView === area.id}
-                >
-                  <span>
-                    <span className="block text-sm font-bold">{t(area.titleKey)}</span>
-                    <span className="mt-1 block text-xs uppercase tracking-[0.14em] text-white/45">{t(area.labelKey)}</span>
-                  </span>
-                  <Crosshair className={`h-5 w-5 ${activeView === area.id ? 'text-gold-light' : 'text-white/35'}`} />
-                </button>
-              ))}
-            </div>
+            ))}
           </div>
         </div>
 
-        <div className="relative order-1 min-h-[30rem] border-b border-white/10 bg-ink/70 sm:min-h-[34rem] lg:order-2 lg:min-h-[38rem] lg:border-b-0 lg:border-l">
+        <div className="relative order-1 min-h-[25rem] border-b border-white/10 bg-ink/70 sm:min-h-[28rem] lg:order-2 lg:min-h-[32rem] lg:border-b-0 lg:border-l">
           <iframe
             key={mapView.id}
             title={`${t(mapView.titleKey)} Google Maps`}
@@ -194,33 +186,20 @@ const DeliveryArea = () => {
           />
           <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(180deg,rgba(10,10,10,0.38)_0%,rgba(10,10,10,0.04)_28%,rgba(10,10,10,0.06)_62%,rgba(10,10,10,0.64)_100%)]" />
           <div className="absolute inset-0 pointer-events-none ring-1 ring-inset ring-white/10" />
-          <div className="absolute left-4 top-4 flex max-w-[calc(100%-2rem)] flex-wrap gap-2 sm:left-6 sm:top-6">
-            <span className="rounded-full border border-cyan-200/30 bg-ink/82 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-cyan-100 backdrop-blur">
-              {t('contact.deliveryChipElPaso')}
-            </span>
-            <span className="rounded-full border border-gold/35 bg-ink/82 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-gold-light backdrop-blur">
-              {t('contact.deliveryChipJuarez')}
-            </span>
-          </div>
-          <div className="absolute right-4 top-20 rounded-full border border-white/15 bg-ink/82 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-white/70 backdrop-blur sm:right-6">
-            Google Maps
-          </div>
           {activeView === 'overview' ? (
-            <div className="absolute inset-x-4 top-28 h-[calc(100%-14rem)] sm:inset-x-6 sm:top-24 sm:h-[calc(100%-13rem)]" aria-label={t('contact.deliveryZoneLabel')}>
+            <div className="absolute inset-x-4 top-12 h-[calc(100%-11rem)] sm:inset-x-6 sm:h-[calc(100%-12rem)]" aria-label={t('contact.deliveryZoneLabel')}>
               {deliveryAreas.map((area) => (
                 <button
                   key={area.id}
                   type="button"
                   data-testid={`delivery-zone-${area.id}`}
-                  className={`focus-ring group absolute z-10 grid -translate-x-1/2 -translate-y-1/2 place-items-center opacity-95 transition hover:scale-[1.04] ${area.zoneClass}`}
+                  className={`focus-ring group absolute z-10 grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center opacity-95 transition hover:scale-[1.04] ${area.zoneClass}`}
                   onClick={() => setActiveView(area.id)}
+                  aria-label={t(area.mapLabelKey)}
                 >
                   <span className="absolute h-20 w-20 rounded-full border border-current/25 bg-current/10 shadow-[0_0_32px_rgba(255,255,255,0.18)] transition group-hover:scale-110 sm:h-24 sm:w-24" />
-                  <span className="absolute h-9 w-9 rounded-full bg-current/20" />
-                  <span className="relative flex max-w-[8.8rem] items-center gap-2 rounded-full border border-current/55 bg-ink/90 px-3 py-2 text-center text-[0.64rem] font-bold uppercase leading-tight tracking-[0.1em] text-current shadow-2xl backdrop-blur-md sm:max-w-none sm:text-[0.68rem]">
-                    <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-current" />
-                    <span>{t(area.mapLabelKey)}</span>
-                  </span>
+                  <span className="absolute h-9 w-9 rounded-full border border-current/45 bg-ink/80 shadow-2xl backdrop-blur-md" />
+                  <span className="relative h-3 w-3 rounded-full bg-current" />
                 </button>
               ))}
             </div>
@@ -253,18 +232,6 @@ const DeliveryArea = () => {
     </section>
   );
 };
-
-type DeliveryBadgeProps = {
-  icon: ReactNode;
-  label: string;
-};
-
-const DeliveryBadge = ({ icon, label }: DeliveryBadgeProps) => (
-  <div className="flex min-w-0 items-center gap-3 rounded-lg border border-white/10 bg-white/[0.06] p-3 text-sm font-bold leading-snug text-white/82 sm:p-4">
-    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gold/15 text-gold-light">{icon}</span>
-    <span className="min-w-0 break-words">{label}</span>
-  </div>
-);
 
 type DeliveryAreaId = 'juarez' | 'westElPaso' | 'centralElPaso';
 type DeliveryViewId = 'overview' | DeliveryAreaId;
@@ -344,17 +311,16 @@ const buildGoogleMapsEmbedUrl = (area: DeliveryMapView) => {
   if (googleMapsEmbedKey) {
     const params = new URLSearchParams({
       key: googleMapsEmbedKey,
-      q: area.mapsQuery,
       center: area.center,
       zoom: String(area.zoom),
       maptype: 'roadmap',
     });
 
-    return `https://www.google.com/maps/embed/v1/search?${params.toString()}`;
+    return `https://www.google.com/maps/embed/v1/view?${params.toString()}`;
   }
 
   const params = new URLSearchParams({
-    q: area.mapsQuery,
+    ll: area.center,
     z: String(area.zoom),
     output: 'embed',
   });
