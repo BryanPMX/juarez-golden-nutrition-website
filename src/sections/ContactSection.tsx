@@ -123,7 +123,7 @@ const DeliveryArea = () => {
   return (
     <section id="delivery-coverage" className="relative mt-8 scroll-mt-24 overflow-hidden rounded-lg border border-gold/25 bg-[#070707] p-0 shadow-gold sm:mt-10">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(240,208,120,0.22),transparent_22rem),radial-gradient(circle_at_76%_24%,rgba(78,180,190,0.18),transparent_24rem),radial-gradient(circle_at_82%_78%,rgba(94,164,107,0.18),transparent_22rem)]" />
-      <div className="relative grid gap-0 lg:grid-cols-[0.82fr_1.18fr]">
+      <div className="relative grid gap-0 lg:grid-cols-[0.92fr_1.08fr]">
         <div className="order-2 flex flex-col justify-between gap-7 p-5 sm:p-8 lg:order-1 lg:p-10">
           <div>
             <p className="eyebrow">{t('contact.deliveryEyebrow')}</p>
@@ -134,7 +134,7 @@ const DeliveryArea = () => {
           </div>
 
           <div>
-            <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 2xl:grid-cols-3">
               <DeliveryBadge icon={<Truck className="h-5 w-5" />} label={t('contact.deliveryBadgeOne')} />
               <DeliveryBadge icon={<Route className="h-5 w-5" />} label={t('contact.deliveryBadgeTwo')} />
               <DeliveryBadge icon={<Navigation className="h-5 w-5" />} label={t('contact.deliveryBadgeThree')} />
@@ -192,13 +192,8 @@ const DeliveryArea = () => {
             src={mapSource}
             allowFullScreen
           />
-          <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(180deg,rgba(10,10,10,0.62)_0%,rgba(10,10,10,0.08)_30%,rgba(10,10,10,0.08)_60%,rgba(10,10,10,0.72)_100%)]" />
+          <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(180deg,rgba(10,10,10,0.38)_0%,rgba(10,10,10,0.04)_28%,rgba(10,10,10,0.06)_62%,rgba(10,10,10,0.64)_100%)]" />
           <div className="absolute inset-0 pointer-events-none ring-1 ring-inset ring-white/10" />
-          <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-            <div className="absolute left-[8%] top-[18%] h-[28%] w-[36%] rounded-[45%] border border-cyan-200/20 bg-cyan-200/5 blur-sm" />
-            <div className="absolute left-[39%] top-[20%] h-[27%] w-[29%] rounded-[42%] border border-leaf-light/20 bg-leaf-light/5 blur-sm" />
-            <div className="absolute left-[43%] top-[50%] h-[32%] w-[38%] rounded-[42%] border border-gold/20 bg-gold/5 blur-sm" />
-          </div>
           <div className="absolute left-4 top-4 flex max-w-[calc(100%-2rem)] flex-wrap gap-2 sm:left-6 sm:top-6">
             <span className="rounded-full border border-cyan-200/30 bg-ink/82 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-cyan-100 backdrop-blur">
               {t('contact.deliveryChipElPaso')}
@@ -210,22 +205,26 @@ const DeliveryArea = () => {
           <div className="absolute right-4 top-20 rounded-full border border-white/15 bg-ink/82 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-white/70 backdrop-blur sm:right-6">
             Google Maps
           </div>
-          <div className="absolute inset-x-4 top-28 h-[calc(100%-14rem)] sm:inset-x-6 sm:top-24 sm:h-[calc(100%-13rem)]" aria-label={t('contact.deliveryZoneLabel')}>
-            {deliveryAreas.map((area) => (
-              <button
-                key={area.id}
-                type="button"
-                data-testid={`delivery-zone-${area.id}`}
-                className={`focus-ring absolute grid place-items-center border px-3 py-2 text-center text-[0.68rem] font-bold uppercase leading-tight tracking-[0.12em] text-white shadow-2xl backdrop-blur-sm transition hover:scale-[1.02] ${area.zoneClass} ${
-                  activeView === area.id ? 'scale-[1.03] opacity-100 ring-2 ring-white/70' : activeView === 'overview' ? 'opacity-95' : 'opacity-55 hover:opacity-90'
-                }`}
-                onClick={() => setActiveView(area.id)}
-                aria-pressed={activeView === area.id}
-              >
-                {t(area.mapLabelKey)}
-              </button>
-            ))}
-          </div>
+          {activeView === 'overview' ? (
+            <div className="absolute inset-x-4 top-28 h-[calc(100%-14rem)] sm:inset-x-6 sm:top-24 sm:h-[calc(100%-13rem)]" aria-label={t('contact.deliveryZoneLabel')}>
+              {deliveryAreas.map((area) => (
+                <button
+                  key={area.id}
+                  type="button"
+                  data-testid={`delivery-zone-${area.id}`}
+                  className={`focus-ring group absolute z-10 grid -translate-x-1/2 -translate-y-1/2 place-items-center opacity-95 transition hover:scale-[1.04] ${area.zoneClass}`}
+                  onClick={() => setActiveView(area.id)}
+                >
+                  <span className="absolute h-20 w-20 rounded-full border border-current/25 bg-current/10 shadow-[0_0_32px_rgba(255,255,255,0.18)] transition group-hover:scale-110 sm:h-24 sm:w-24" />
+                  <span className="absolute h-9 w-9 rounded-full bg-current/20" />
+                  <span className="relative flex max-w-[8.8rem] items-center gap-2 rounded-full border border-current/55 bg-ink/90 px-3 py-2 text-center text-[0.64rem] font-bold uppercase leading-tight tracking-[0.1em] text-current shadow-2xl backdrop-blur-md sm:max-w-none sm:text-[0.68rem]">
+                    <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-current" />
+                    <span>{t(area.mapLabelKey)}</span>
+                  </span>
+                </button>
+              ))}
+            </div>
+          ) : null}
           <div className="absolute bottom-4 left-4 w-[calc(100%-2rem)] rounded-lg border border-white/10 bg-ink/90 p-3 backdrop-blur sm:bottom-6 sm:left-6 sm:w-80 sm:p-4">
             <div className="flex items-center gap-3">
               <span className="grid h-11 w-11 place-items-center rounded-full bg-gold/15 text-gold-light">
@@ -261,9 +260,9 @@ type DeliveryBadgeProps = {
 };
 
 const DeliveryBadge = ({ icon, label }: DeliveryBadgeProps) => (
-  <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.06] p-3 text-sm font-bold text-white/82 sm:p-4">
+  <div className="flex min-w-0 items-center gap-3 rounded-lg border border-white/10 bg-white/[0.06] p-3 text-sm font-bold leading-snug text-white/82 sm:p-4">
     <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gold/15 text-gold-light">{icon}</span>
-    {label}
+    <span className="min-w-0 break-words">{label}</span>
   </div>
 );
 
@@ -309,7 +308,7 @@ const deliveryAreas: (DeliveryMapView & {
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Ciudad+Juarez+Chihuahua+Mexico',
     center: '31.6904,-106.4245',
     zoom: 11,
-    zoneClass: 'left-[43%] top-[50%] h-[32%] w-[38%] rounded-[42%] border-gold/70 bg-gold/[0.28] text-gold-light',
+    zoneClass: 'left-[62%] top-[66%] text-gold-light',
   },
   {
     id: 'westElPaso',
@@ -322,7 +321,7 @@ const deliveryAreas: (DeliveryMapView & {
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=West+El+Paso+TX',
     center: '31.8200,-106.5850',
     zoom: 12,
-    zoneClass: 'left-[8%] top-[18%] h-[28%] w-[36%] rounded-[45%] border-cyan-200/70 bg-cyan-200/[0.24] text-cyan-100',
+    zoneClass: 'left-[26%] top-[32%] text-cyan-100',
   },
   {
     id: 'centralElPaso',
@@ -335,7 +334,7 @@ const deliveryAreas: (DeliveryMapView & {
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Central+El+Paso+TX',
     center: '31.7619,-106.4850',
     zoom: 12,
-    zoneClass: 'left-[39%] top-[20%] h-[27%] w-[29%] rounded-[42%] border-leaf-light/70 bg-leaf-light/[0.24] text-leaf-light',
+    zoneClass: 'left-[54%] top-[34%] text-leaf-light',
   },
 ];
 
