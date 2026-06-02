@@ -1,10 +1,10 @@
 import { Menu, MessageCircle, X } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { NavLink } from 'react-router-dom';
 import { navItems } from '../../data/siteContent';
-import { useActiveSection } from '../../hooks/useActiveSection';
 import { useLocale } from '../../hooks/useLocale';
-import { whatsappLink, scrollToSection } from '../../lib/constants';
+import { whatsappLink } from '../../lib/constants';
 import { LinkButton } from '../ui/Button';
 import { LanguageToggle } from '../ui/LanguageToggle';
 
@@ -12,22 +12,14 @@ export const Navbar = () => {
   const { t } = useTranslation();
   const { locale } = useLocale();
   const [open, setOpen] = useState(false);
-  const ids = useMemo(() => navItems.map((item) => item.id), []);
-  const activeSection = useActiveSection(ids);
   const orderHref = whatsappLink(locale === 'es' ? 'Hola, quiero pedir un plan.' : 'Hi, I want to order a plan.');
-
-  const handleNav = (id: string) => {
-    scrollToSection(id);
-    setOpen(false);
-  };
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-ink/90 backdrop-blur-xl">
       <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <button
-          type="button"
+        <NavLink
+          to="/"
           className="focus-ring flex min-w-0 items-center gap-3 rounded-full lg:-ml-4 lg:w-[17.5rem] xl:-ml-8"
-          onClick={() => handleNav('home')}
           aria-label="Golden Nutrition home"
         >
           <img
@@ -39,20 +31,21 @@ export const Navbar = () => {
             <span className="block font-display text-xl font-bold leading-none text-white">Golden Nutrition</span>
             <span className="text-xs uppercase tracking-[0.2em] text-gold">Ciudad Juarez</span>
           </span>
-        </button>
+        </NavLink>
 
         <div className="hidden flex-1 items-center justify-center gap-1 lg:flex">
           {navItems.map((item) => (
-            <button
+            <NavLink
               key={item.id}
-              type="button"
-              onClick={() => handleNav(item.id)}
-              className={`focus-ring rounded-full px-3 py-2 text-sm font-semibold transition xl:px-4 ${
-                activeSection === item.id ? 'bg-gold/10 text-gold-light' : 'text-white/70 hover:text-white'
-              }`}
+              to={item.path}
+              className={({ isActive }) =>
+                `focus-ring rounded-full px-3 py-2 text-sm font-semibold transition xl:px-4 ${
+                  isActive ? 'bg-gold/10 text-gold-light' : 'text-white/70 hover:text-white'
+                }`
+              }
             >
               {item.label[locale]}
-            </button>
+            </NavLink>
           ))}
         </div>
 
@@ -77,14 +70,18 @@ export const Navbar = () => {
         <div className="border-t border-white/10 bg-ink px-4 py-4 lg:hidden">
           <div className="grid gap-2">
             {navItems.map((item) => (
-              <button
+              <NavLink
                 key={item.id}
-                type="button"
-                onClick={() => handleNav(item.id)}
-                className="focus-ring rounded-lg px-3 py-3 text-left font-semibold text-white/80 hover:bg-white/10"
+                to={item.path}
+                onClick={() => setOpen(false)}
+                className={({ isActive }) =>
+                  `focus-ring rounded-lg px-3 py-3 text-left font-semibold transition hover:bg-white/10 ${
+                    isActive ? 'bg-gold/10 text-gold-light' : 'text-white/80'
+                  }`
+                }
               >
                 {item.label[locale]}
-              </button>
+              </NavLink>
             ))}
             <div className="mt-3 flex items-center justify-between gap-3">
               <LanguageToggle />

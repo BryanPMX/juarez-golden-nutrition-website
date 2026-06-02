@@ -1,7 +1,7 @@
 import { ArrowUp, MessageCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useLocale } from '../../hooks/useLocale';
-import { scrollToSection, whatsappLink } from '../../lib/constants';
+import { whatsappLink } from '../../lib/constants';
 
 export const FloatingActions = () => {
   const [visible, setVisible] = useState(false);
@@ -28,7 +28,7 @@ export const FloatingActions = () => {
       {visible ? (
         <button
           type="button"
-          onClick={() => scrollToSection('home')}
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="focus-ring grid h-12 w-12 place-items-center rounded-full border border-white/10 bg-ink-card text-white shadow-2xl transition hover:-translate-y-1"
           aria-label="Back to top"
         >

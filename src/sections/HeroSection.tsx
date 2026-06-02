@@ -1,17 +1,19 @@
 import { motion } from 'framer-motion';
 import { MessageCircle, Utensils } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import heroImage from '../assets/hero-meal-prep.png';
 import { FoodParticles } from '../components/common/FoodParticles';
 import { AnimatedCounter } from '../components/ui/AnimatedCounter';
 import { Button, LinkButton } from '../components/ui/Button';
 import { stats } from '../data/siteContent';
 import { useLocale } from '../hooks/useLocale';
-import { scrollToSection, whatsappLink } from '../lib/constants';
+import { whatsappLink } from '../lib/constants';
 
 export const HeroSection = () => {
   const { t } = useTranslation();
   const { locale } = useLocale();
+  const navigate = useNavigate();
 
   return (
     <section id="home" className="relative min-h-screen overflow-hidden pt-20">
@@ -68,7 +70,7 @@ export const HeroSection = () => {
             >
               {t('common.orderNow')}
             </LinkButton>
-            <Button variant="secondary" onClick={() => scrollToSection('menu')} icon={<Utensils className="h-4 w-4" />}>
+            <Button variant="secondary" onClick={() => navigate('/menu-y-planes')} icon={<Utensils className="h-4 w-4" />}>
               {t('common.seeMenu')}
             </Button>
           </motion.div>

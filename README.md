@@ -1,6 +1,6 @@
 # Golden Nutrition Ciudad Juarez
 
-Bilingual React marketing website for Golden Nutrition Ciudad Juarez, based on the provided SRS. The site is a single-page Vite app with animated sections, ES/EN i18n, WhatsApp lead flow, validated contact form with honeypot spam protection, structured SEO data, and deployment-ready Vercel headers.
+Bilingual React marketing website for Golden Nutrition Ciudad Juarez, based on the provided SRS. The site is a routed Vite app with dedicated Inicio, Menu y Planes, and Contacto pages, animated sections, ES/EN i18n, WhatsApp lead flow, validated contact form with honeypot spam protection, structured SEO data, and deployment-ready Vercel headers.
 
 ## Stack
 
@@ -25,13 +25,14 @@ npm run build
 
 ## Environment Variables
 
-Create a Vercel environment variable:
+Create Vercel environment variables:
 
 ```bash
 VITE_SITE_URL=https://your-production-domain.com
+VITE_GOOGLE_MAPS_EMBED_API_KEY=your-google-maps-embed-api-key
 ```
 
-This is used for canonical structured data and share metadata. No API keys are required for v1.0 because the SRS excludes backend ordering, payments, accounts, CMS, and databases.
+`VITE_SITE_URL` is used for canonical structured data and share metadata. `VITE_GOOGLE_MAPS_EMBED_API_KEY` enables the Google Maps embed coverage view; without it, the site falls back to a standard Google Maps embed URL. No backend ordering, payments, accounts, CMS, or databases are required for v1.0.
 
 ## Vercel Setup
 

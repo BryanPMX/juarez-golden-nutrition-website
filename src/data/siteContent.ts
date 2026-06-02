@@ -48,13 +48,9 @@ export type Plan = {
 };
 
 export const navItems = [
-  { id: 'home', label: { es: 'Inicio', en: 'Home' } },
-  { id: 'about', label: { es: 'Nosotros', en: 'About' } },
-  { id: 'services', label: { es: 'Servicios', en: 'Services' } },
-  { id: 'menu', label: { es: 'Menu y planes', en: 'Menu and plans' } },
-  { id: 'why-us', label: { es: 'Por que nosotros', en: 'Why us' } },
-  { id: 'faq', label: { es: 'Preguntas', en: 'FAQ' } },
-  { id: 'contact', label: { es: 'Contacto', en: 'Contact' } },
+  { id: 'home', path: '/', label: { es: 'Inicio', en: 'Home' } },
+  { id: 'menu', path: '/menu-y-planes', label: { es: 'Menu y Planes', en: 'Menu and Plans' } },
+  { id: 'contact', path: '/contacto', label: { es: 'Contacto', en: 'Contact' } },
 ];
 
 export const plans: Plan[] = [

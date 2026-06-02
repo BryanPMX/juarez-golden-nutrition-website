@@ -6,6 +6,23 @@ export const resources = {
         description:
           'Planes semanales de meal prep saludable para adultos y ninos en Ciudad Juarez. Golden Nutrition y Nutricion a la Carta con entrega a domicilio.',
       },
+      pageMeta: {
+        home: {
+          title: 'Golden Nutrition Ciudad Juarez | Inicio',
+          description:
+            'Conoce Golden Nutrition, sus servicios de meal prep saludable y por que es una opcion practica para comer mejor en Ciudad Juarez.',
+        },
+        menu: {
+          title: 'Menu y Planes | Golden Nutrition Ciudad Juarez',
+          description:
+            'Explora los planes semanales de Golden Nutrition y Nutricion a la Carta para adultos y ninos, con precios, ingredientes y opciones de pedido.',
+        },
+        contact: {
+          title: 'Contacto y Preguntas Frecuentes | Golden Nutrition Ciudad Juarez',
+          description:
+            'Contacta a Golden Nutrition, revisa preguntas frecuentes y consulta la cobertura de entrega en Ciudad Juarez y rutas seleccionadas de El Paso.',
+        },
+      },
       common: {
         orderNow: 'Pedir ahora',
         seeMenu: 'Ver menu',
@@ -114,6 +131,23 @@ export const resources = {
         title: 'Golden Nutrition Ciudad Juarez | Healthy meal prep delivery',
         description:
           'Weekly healthy meal prep plans for adults and kids in Ciudad Juarez. Golden Nutrition and Nutricion a la Carta with home delivery.',
+      },
+      pageMeta: {
+        home: {
+          title: 'Golden Nutrition Ciudad Juarez | Home',
+          description:
+            'Meet Golden Nutrition, its healthy meal prep services, and why it is a practical way to eat better in Ciudad Juarez.',
+        },
+        menu: {
+          title: 'Menu and Plans | Golden Nutrition Ciudad Juarez',
+          description:
+            'Explore weekly Golden Nutrition and Nutricion a la Carta plans for adults and kids, including prices, ingredients, and ordering options.',
+        },
+        contact: {
+          title: 'Contact and FAQ | Golden Nutrition Ciudad Juarez',
+          description:
+            'Contact Golden Nutrition, review frequently asked questions, and check delivery coverage in Ciudad Juarez and selected El Paso routes.',
+        },
       },
       common: {
         orderNow: 'Order now',
