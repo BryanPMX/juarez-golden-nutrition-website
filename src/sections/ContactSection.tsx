@@ -1,6 +1,7 @@
-import { Mail, MapPin, MessageCircle, Navigation, Phone, Route, Truck } from 'lucide-react';
+import { Building2, Crosshair, ExternalLink, Mail, MapPin, MessageCircle, Navigation, Phone, Route, Truck } from 'lucide-react';
 import { useState } from 'react';
 import type { ReactNode } from 'react';
+import type { LucideIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { LinkButton } from '../components/ui/Button';
@@ -123,11 +124,15 @@ export const ContactSection = () => {
 
 const DeliveryArea = () => {
   const { t } = useTranslation();
+  const [activeArea, setActiveArea] = useState<DeliveryAreaId>('juarez');
+  const selectedArea = deliveryAreas.find((area) => area.id === activeArea) ?? deliveryAreas[0];
+  const SelectedAreaIcon = selectedArea.icon;
+  const mapSource = buildGoogleMapsEmbedUrl(selectedArea);
 
   return (
     <section className="relative mt-10 overflow-hidden rounded-lg border border-gold/25 bg-[#070707] p-0 shadow-gold">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(240,208,120,0.24),transparent_22rem),radial-gradient(circle_at_82%_72%,rgba(94,164,107,0.22),transparent_24rem)]" />
-      <div className="relative grid gap-0 lg:grid-cols-[0.95fr_1.05fr]">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(240,208,120,0.22),transparent_22rem),radial-gradient(circle_at_76%_24%,rgba(78,180,190,0.18),transparent_24rem),radial-gradient(circle_at_82%_78%,rgba(94,164,107,0.18),transparent_22rem)]" />
+      <div className="relative grid gap-0 lg:grid-cols-[0.88fr_1.12fr]">
         <div className="flex flex-col justify-between gap-8 p-6 sm:p-8 lg:p-10">
           <div>
             <p className="eyebrow">{t('contact.deliveryEyebrow')}</p>
@@ -136,51 +141,80 @@ const DeliveryArea = () => {
             </h3>
             <p className="mt-5 max-w-xl text-lg leading-8 text-white/72">{t('contact.deliveryCopy')}</p>
           </div>
-          <div className="grid gap-3 sm:grid-cols-3">
-            <DeliveryBadge icon={<Truck className="h-5 w-5" />} label={t('contact.deliveryBadgeOne')} />
-            <DeliveryBadge icon={<Route className="h-5 w-5" />} label={t('contact.deliveryBadgeTwo')} />
-            <DeliveryBadge icon={<Navigation className="h-5 w-5" />} label={t('contact.deliveryBadgeThree')} />
+
+          <div>
+            <div className="grid gap-3 sm:grid-cols-3">
+              <DeliveryBadge icon={<Truck className="h-5 w-5" />} label={t('contact.deliveryBadgeOne')} />
+              <DeliveryBadge icon={<Route className="h-5 w-5" />} label={t('contact.deliveryBadgeTwo')} />
+              <DeliveryBadge icon={<Navigation className="h-5 w-5" />} label={t('contact.deliveryBadgeThree')} />
+            </div>
+
+            <div className="mt-5 grid gap-2" aria-label={t('contact.deliveryZoneLabel')}>
+              {deliveryAreas.map((area) => (
+                <button
+                  key={area.id}
+                  type="button"
+                  className={`focus-ring flex items-center justify-between rounded-lg border px-4 py-3 text-left transition ${
+                    activeArea === area.id
+                      ? 'border-gold/70 bg-gold/15 text-white shadow-gold'
+                      : 'border-white/10 bg-white/[0.04] text-white/72 hover:border-white/25 hover:bg-white/[0.07]'
+                  }`}
+                  onClick={() => setActiveArea(area.id)}
+                >
+                  <span>
+                    <span className="block text-sm font-bold">{t(area.titleKey)}</span>
+                    <span className="mt-1 block text-xs uppercase tracking-[0.14em] text-white/45">{t(area.labelKey)}</span>
+                  </span>
+                  <Crosshair className={`h-5 w-5 ${activeArea === area.id ? 'text-gold-light' : 'text-white/35'}`} />
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
-        <div className="relative min-h-[24rem] border-t border-white/10 bg-ink/70 lg:border-l lg:border-t-0">
-          <div className="absolute inset-0 opacity-35 [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:42px_42px]" />
-          <svg className="absolute inset-0 h-full w-full" viewBox="0 0 640 420" role="img" aria-label={t('contact.deliveryTitle')}>
-            <path
-              d="M146 75 C105 122 94 184 122 241 C153 304 218 342 297 356 C379 370 475 341 520 275 C564 210 535 143 468 107 C392 66 214 31 146 75 Z"
-              fill="rgba(201,168,76,0.10)"
-              stroke="rgba(240,208,120,0.72)"
-              strokeWidth="3"
-            />
-            <path
-              d="M132 260 C212 206 261 214 319 165 C366 126 424 130 506 92"
-              fill="none"
-              stroke="rgba(94,164,107,0.88)"
-              strokeLinecap="round"
-              strokeWidth="8"
-            />
-            <path
-              d="M164 108 C211 169 271 204 359 221 C430 235 474 268 520 326"
-              fill="none"
-              stroke="rgba(240,208,120,0.86)"
-              strokeDasharray="16 14"
-              strokeLinecap="round"
-              strokeWidth="5"
-            />
-            <circle cx="318" cy="210" r="58" fill="rgba(201,168,76,0.18)" />
-            <circle cx="318" cy="210" r="18" fill="#C9A84C" />
-            <circle cx="318" cy="210" r="7" fill="#0A0A0A" />
-          </svg>
-          <div className="absolute left-6 top-6 rounded-full border border-gold/35 bg-ink/80 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-gold-light backdrop-blur">
-            {t('contact.deliveryChipNorth')}
+        <div className="relative min-h-[28rem] border-t border-white/10 bg-ink/70 lg:border-l lg:border-t-0">
+          <iframe
+            key={selectedArea.id}
+            title={`${t(selectedArea.titleKey)} Google Maps`}
+            className="absolute inset-0 h-full w-full border-0 saturate-[0.88] contrast-[1.08]"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            src={mapSource}
+            allowFullScreen
+          />
+          <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(180deg,rgba(10,10,10,0.62)_0%,rgba(10,10,10,0.08)_30%,rgba(10,10,10,0.08)_60%,rgba(10,10,10,0.72)_100%)]" />
+          <div className="absolute inset-0 pointer-events-none ring-1 ring-inset ring-white/10" />
+          <div className="absolute left-4 top-4 flex flex-wrap gap-2 sm:left-6 sm:top-6">
+            <span className="rounded-full border border-cyan-200/30 bg-ink/82 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-cyan-100 backdrop-blur">
+              {t('contact.deliveryChipElPaso')}
+            </span>
+            <span className="rounded-full border border-gold/35 bg-ink/82 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-gold-light backdrop-blur">
+              {t('contact.deliveryChipJuarez')}
+            </span>
           </div>
-          <div className="absolute bottom-6 right-6 rounded-full border border-leaf/40 bg-ink/80 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-leaf-light backdrop-blur">
-            {t('contact.deliveryChipSouth')}
+          <div className="absolute right-4 top-20 rounded-full border border-white/15 bg-ink/82 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-white/70 backdrop-blur sm:right-6">
+            Google Maps
           </div>
-          <div className="absolute left-1/2 top-1/2 w-52 -translate-x-1/2 -translate-y-1/2 rounded-lg border border-white/10 bg-ink/88 p-4 text-center backdrop-blur">
-            <MapPin className="mx-auto h-7 w-7 text-gold-light" />
-            <p className="mt-2 font-display text-2xl font-bold text-white">{t('contact.deliveryCenter')}</p>
-            <p className="mt-1 text-sm text-white/62">{t('contact.deliveryCenterCopy')}</p>
+          <div className="absolute bottom-4 left-4 w-[calc(100%-2rem)] rounded-lg border border-white/10 bg-ink/88 p-4 backdrop-blur sm:bottom-6 sm:left-6 sm:w-72">
+            <div className="flex items-center gap-3">
+              <span className="grid h-11 w-11 place-items-center rounded-full bg-gold/15 text-gold-light">
+                <SelectedAreaIcon className="h-5 w-5" />
+              </span>
+              <div>
+                <p className="font-display text-2xl font-bold text-white">{t(selectedArea.titleKey)}</p>
+                <p className="text-xs uppercase tracking-[0.16em] text-white/45">{t(selectedArea.labelKey)}</p>
+              </div>
+            </div>
+            <p className="mt-3 text-sm leading-6 text-white/68">{t(selectedArea.copyKey)}</p>
+            <a
+              className="focus-ring mt-4 inline-flex items-center gap-2 rounded-full border border-gold/35 px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-gold-light transition hover:bg-gold/10"
+              href={selectedArea.mapsLink}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {t('contact.deliveryOpenMap')}
+              <ExternalLink className="h-3.5 w-3.5" />
+            </a>
           </div>
         </div>
       </div>
@@ -199,6 +233,78 @@ const DeliveryBadge = ({ icon, label }: DeliveryBadgeProps) => (
     {label}
   </div>
 );
+
+type DeliveryAreaId = 'juarez' | 'westElPaso' | 'centralElPaso';
+
+const deliveryAreas: {
+  id: DeliveryAreaId;
+  titleKey: string;
+  labelKey: string;
+  copyKey: string;
+  icon: LucideIcon;
+  mapsQuery: string;
+  mapsLink: string;
+  center: string;
+  zoom: number;
+}[] = [
+  {
+    id: 'juarez',
+    titleKey: 'contact.deliveryAreas.juarez.title',
+    labelKey: 'contact.deliveryAreas.juarez.label',
+    copyKey: 'contact.deliveryAreas.juarez.copy',
+    icon: MapPin,
+    mapsQuery: 'Ciudad Juarez, Chihuahua, Mexico',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=Ciudad+Juarez+Chihuahua+Mexico',
+    center: '31.6904,-106.4245',
+    zoom: 11,
+  },
+  {
+    id: 'westElPaso',
+    titleKey: 'contact.deliveryAreas.westElPaso.title',
+    labelKey: 'contact.deliveryAreas.westElPaso.label',
+    copyKey: 'contact.deliveryAreas.westElPaso.copy',
+    icon: Navigation,
+    mapsQuery: 'West El Paso, El Paso, TX',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=West+El+Paso+TX',
+    center: '31.8200,-106.5850',
+    zoom: 12,
+  },
+  {
+    id: 'centralElPaso',
+    titleKey: 'contact.deliveryAreas.centralElPaso.title',
+    labelKey: 'contact.deliveryAreas.centralElPaso.label',
+    copyKey: 'contact.deliveryAreas.centralElPaso.copy',
+    icon: Building2,
+    mapsQuery: 'Central El Paso, El Paso, TX',
+    mapsLink: 'https://www.google.com/maps/search/?api=1&query=Central+El+Paso+TX',
+    center: '31.7619,-106.4850',
+    zoom: 12,
+  },
+];
+
+const googleMapsEmbedKey = import.meta.env.VITE_GOOGLE_MAPS_EMBED_API_KEY?.trim();
+
+const buildGoogleMapsEmbedUrl = (area: (typeof deliveryAreas)[number]) => {
+  if (googleMapsEmbedKey) {
+    const params = new URLSearchParams({
+      key: googleMapsEmbedKey,
+      q: area.mapsQuery,
+      center: area.center,
+      zoom: String(area.zoom),
+      maptype: 'roadmap',
+    });
+
+    return `https://www.google.com/maps/embed/v1/search?${params.toString()}`;
+  }
+
+  const params = new URLSearchParams({
+    q: area.mapsQuery,
+    z: String(area.zoom),
+    output: 'embed',
+  });
+
+  return `https://maps.google.com/maps?${params.toString()}`;
+};
 
 type FieldProps = {
   label: string;

@@ -1,5 +1,11 @@
 node_modules
 dist
 .DS_Store
+
+# Local environment files with public runtime config and API keys.
+.env
+.env.*
+!.env.example
+
 *.local
 tmp-smoke-*.png
