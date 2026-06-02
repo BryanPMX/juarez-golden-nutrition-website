@@ -14,13 +14,13 @@ export const ServicesSection = () => {
     <section id="services" className="bg-ink">
       <div className="section-shell">
         <SectionHeading eyebrow={t('services.eyebrow')} title={t('services.title')} copy={t('services.copy')} />
-        <div className="mt-12 grid gap-5 md:grid-cols-2">
+        <div className="mt-8 grid gap-5 sm:mt-12 md:grid-cols-2">
           {plans.map((plan, index) => {
             const Icon = plan.icon;
             return (
               <motion.article
                 key={plan.id}
-                className={`glass-panel group rounded-lg p-6 transition hover:-translate-y-1 ${
+                className={`glass-panel group rounded-lg p-5 transition hover:-translate-y-1 sm:p-6 ${
                   plan.accent === 'leaf' ? 'hover:border-leaf/50' : 'hover:border-gold/50'
                 }`}
                 initial={{ opacity: 0, y: 22 }}
@@ -31,14 +31,14 @@ export const ServicesSection = () => {
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p className="font-label text-xs font-bold uppercase tracking-[0.18em] text-white/50">{plan.brand}</p>
-                    <h3 className="mt-2 font-display text-3xl font-bold text-white">{plan.title[locale]}</h3>
+                    <h3 className="mt-2 font-display text-2xl font-bold leading-tight text-white sm:text-3xl">{plan.title[locale]}</h3>
                   </div>
                   <div className="relative grid h-16 w-16 shrink-0 place-items-center">
                     <Lottie animationData={nutritionPulse} loop className="absolute inset-0 opacity-70" />
                     <Icon className={`relative h-7 w-7 ${plan.accent === 'leaf' ? 'text-leaf-light' : 'text-gold-light'}`} />
                   </div>
                 </div>
-                <p className={`mt-6 font-display text-4xl font-bold ${plan.accent === 'leaf' ? 'text-leaf-light' : 'text-gold-light'}`}>
+                <p className={`mt-5 font-display text-3xl font-bold sm:mt-6 sm:text-4xl ${plan.accent === 'leaf' ? 'text-leaf-light' : 'text-gold-light'}`}>
                   {plan.price}
                 </p>
                 <p className="mt-1 text-sm font-semibold text-white/60">{plan.duration[locale]}</p>

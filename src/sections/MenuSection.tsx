@@ -22,7 +22,7 @@ export const MenuSection = () => {
       <div className="section-shell">
         <SectionHeading eyebrow={t('menu.eyebrow')} title={t('menu.title')} align="center" />
 
-        <div className="mx-auto mt-8 inline-flex rounded-full border border-white/10 bg-ink p-1">
+        <div className="mx-auto mt-7 inline-flex rounded-full border border-white/10 bg-ink p-1 sm:mt-8">
           {plans.map((item) => (
             <button
               key={item.id}
@@ -41,21 +41,21 @@ export const MenuSection = () => {
           ))}
         </div>
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
+        <div className="mt-8 grid gap-6 sm:mt-10 lg:grid-cols-[0.85fr_1.15fr]">
           <motion.aside
             key={plan.id}
-            className="glass-panel rounded-lg p-6"
+            className="glass-panel min-w-0 rounded-lg p-5 sm:p-6"
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.3 }}
           >
             <p className="eyebrow">{plan.brand}</p>
-            <h3 className="mt-3 font-display text-4xl font-bold text-white">{plan.title[locale]}</h3>
-            <p className={`mt-5 font-display text-5xl font-bold ${plan.accent === 'leaf' ? 'text-leaf-light' : 'text-gold-light'}`}>
+            <h3 className="mt-3 font-display text-3xl font-bold leading-tight text-white sm:text-4xl">{plan.title[locale]}</h3>
+            <p className={`mt-4 font-display text-4xl font-bold sm:mt-5 sm:text-5xl ${plan.accent === 'leaf' ? 'text-leaf-light' : 'text-gold-light'}`}>
               {plan.price}
             </p>
             <p className="mt-2 text-white/60">{plan.duration[locale]}</p>
-            <p className="mt-5 text-lg leading-8 text-white/75">{plan.target[locale]}</p>
+            <p className="mt-5 text-base leading-7 text-white/75 sm:text-lg sm:leading-8">{plan.target[locale]}</p>
             <ul className="mt-6 grid gap-3">
               {plan.features.map((feature) => (
                 <li key={feature.es} className="rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-white/75">
@@ -78,14 +78,14 @@ export const MenuSection = () => {
             </LinkButton>
           </motion.aside>
 
-          <div>
+          <div className="min-w-0">
             {activePlan === 'adult' ? (
               <div ref={emblaRef} className="overflow-hidden">
                 <div className="flex gap-4">
                   {adultMeals.map((meal, index) => (
                     <motion.article
                       key={meal.id}
-                      className="min-w-[82%] rounded-lg border border-white/10 bg-ink-card p-4 shadow-2xl transition hover:-translate-y-1 hover:border-gold/50 sm:min-w-[48%] lg:min-w-[38%]"
+                      className="shrink-0 basis-[82%] rounded-lg border border-white/10 bg-ink-card p-4 shadow-2xl transition hover:-translate-y-1 hover:border-gold/50 sm:basis-[48%] lg:basis-[38%]"
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, amount: 0.2 }}
@@ -97,7 +97,7 @@ export const MenuSection = () => {
                         loading="lazy"
                         className="h-44 w-full rounded-md object-cover"
                       />
-                      <h4 className="mt-4 font-display text-2xl font-bold text-white">{meal.name[locale]}</h4>
+                      <h4 className="mt-4 font-display text-xl font-bold leading-tight text-white sm:text-2xl">{meal.name[locale]}</h4>
                       <p className="mt-3 text-xs font-bold uppercase tracking-[0.16em] text-gold">{t('menu.ingredients')}</p>
                       <p className="mt-2 text-sm leading-6 text-white/70">{meal.ingredients[locale]}</p>
                     </motion.article>

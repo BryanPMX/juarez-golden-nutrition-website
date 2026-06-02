@@ -26,7 +26,7 @@ export const Navbar = () => {
       <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <button
           type="button"
-          className="focus-ring flex items-center gap-3 rounded-full"
+          className="focus-ring flex min-w-0 items-center gap-3 rounded-full lg:-ml-4 lg:w-[17.5rem] xl:-ml-8"
           onClick={() => handleNav('home')}
           aria-label="Golden Nutrition home"
         >
@@ -41,13 +41,13 @@ export const Navbar = () => {
           </span>
         </button>
 
-        <div className="hidden items-center gap-1 lg:flex">
+        <div className="hidden flex-1 items-center justify-center gap-1 lg:flex">
           {navItems.map((item) => (
             <button
               key={item.id}
               type="button"
               onClick={() => handleNav(item.id)}
-              className={`focus-ring rounded-full px-3 py-2 text-sm font-semibold transition ${
+              className={`focus-ring rounded-full px-3 py-2 text-sm font-semibold transition xl:px-4 ${
                 activeSection === item.id ? 'bg-gold/10 text-gold-light' : 'text-white/70 hover:text-white'
               }`}
             >
@@ -56,7 +56,7 @@ export const Navbar = () => {
           ))}
         </div>
 
-        <div className="hidden items-center gap-3 lg:flex">
+        <div className="hidden w-[17.5rem] items-center justify-end gap-3 lg:flex xl:-mr-8">
           <LanguageToggle />
           <LinkButton href={orderHref} target="_blank" rel="noreferrer" icon={<MessageCircle className="h-4 w-4" />}>
             {t('common.orderNow')}

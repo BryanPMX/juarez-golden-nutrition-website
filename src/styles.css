@@ -21,6 +21,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  overflow-x: hidden;
   background:
     radial-gradient(circle at top left, rgba(201, 168, 76, 0.18), transparent 30rem),
     linear-gradient(180deg, #0a0a0a 0%, #111111 40%, #0a0a0a 100%);
@@ -55,7 +56,7 @@ a {
 }
 
 .section-shell {
-  @apply mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24;
+  @apply mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-24;
 }
 
 .eyebrow {
