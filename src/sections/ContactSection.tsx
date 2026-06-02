@@ -1,10 +1,9 @@
-import { Building2, Crosshair, ExternalLink, Mail, MapPin, MessageCircle, Navigation, Phone, Route, Truck } from 'lucide-react';
+import { Building2, Crosshair, ExternalLink, Mail, MapPin, Navigation, Phone, Route, Truck } from 'lucide-react';
 import { useState } from 'react';
 import type { ReactNode } from 'react';
 import type { LucideIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { LinkButton } from '../components/ui/Button';
 import { SectionHeading } from '../components/ui/SectionHeading';
 import { plans } from '../data/siteContent';
 import { useLocale } from '../hooks/useLocale';
@@ -65,15 +64,6 @@ export const ContactSection = () => {
                 <span>{BUSINESS.location}</span>
               </div>
             </div>
-            <LinkButton
-              className="mt-6"
-              href={whatsappLink(locale === 'es' ? 'Hola, quiero informacion.' : 'Hi, I would like information.')}
-              target="_blank"
-              rel="noreferrer"
-              icon={<MessageCircle className="h-4 w-4" />}
-            >
-              {t('common.whatsapp')}
-            </LinkButton>
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="glass-panel rounded-lg p-5 sm:p-6" noValidate>
