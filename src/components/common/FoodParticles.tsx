@@ -92,7 +92,7 @@ export const FoodParticles = ({ preset = 'section' }: FoodParticlesProps) => {
         <span
           key={`${preset}-${particle.emoji}-${particle.top}-${particle.left}`}
           data-food-particle
-          className={`absolute hidden rounded-full border border-white/10 text-white/90 shadow-[0_18px_50px_rgba(0,0,0,0.28)] will-change-transform sm:block ${particle.sizeClassName} ${particle.alphaClassName} ${particle.blurClassName}`}
+          className={`absolute rounded-full border border-white/10 text-white/90 shadow-[0_18px_50px_rgba(0,0,0,0.28)] will-change-transform ${particle.sizeClassName} ${particle.alphaClassName} ${particle.blurClassName}`}
           style={{ top: particle.top, left: particle.left }}
         >
           {particle.emoji}
