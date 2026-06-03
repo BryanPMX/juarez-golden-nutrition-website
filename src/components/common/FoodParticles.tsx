@@ -133,7 +133,7 @@ export const FoodParticles = ({ preset = 'section' }: FoodParticlesProps) => {
   return (
     <div
       ref={rootRef}
-      className={`pointer-events-none absolute inset-0 z-0 overflow-hidden [mask-image:radial-gradient(circle_at_center,black_12%,black_76%,transparent_100%)] ${visibilityClassName}`}
+      className={`pointer-events-none absolute inset-0 z-20 overflow-hidden [mask-image:radial-gradient(circle_at_center,black_12%,black_76%,transparent_100%)] ${visibilityClassName}`}
     >
       {particles.map((particle) => (
         <button
