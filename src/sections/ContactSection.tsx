@@ -10,6 +10,18 @@ import { plans } from '../data/siteContent';
 import { useLocale } from '../hooks/useLocale';
 import { BUSINESS, whatsappLink } from '../lib/constants';
 
+declare global {
+  interface Window {
+    google: {
+      maps: {
+        Map: any;
+        Polygon: any;
+        LatLngLiteral: any;
+      };
+    };
+  }
+}
+
 type ContactFormValues = {
   name: string;
   phone: string;
@@ -117,12 +129,178 @@ export const ContactSection = () => {
 const DeliveryArea = () => {
   const { t } = useTranslation();
   const [activeView, setActiveView] = useState<DeliveryViewId>('overview');
-  const mapFrameRef = useRef<HTMLDivElement>(null);
-  const mapSize = useElementSize(mapFrameRef);
+  const mapRef = useRef<HTMLDivElement>(null);
+  const mapInstanceRef = useRef<google.maps.Map | null>(null);
+  const polygonsRef = useRef<Record<DeliveryAreaId, google.maps.Polygon>>({});
+
   const selectedArea = activeView === 'overview' ? null : deliveryAreas.find((area) => area.id === activeView) ?? deliveryAreas[0];
   const mapView = selectedArea ?? deliveryOverview;
   const SelectedAreaIcon = mapView.icon;
-  const mapSource = buildGoogleMapsEmbedUrl(mapView);
+
+  // Load Google Maps API and initialize map
+  useEffect(() => {
+    const loadGoogleMaps = async () => {
+      const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+      
+      if (!window.google && apiKey) {
+        const script = document.createElement('script');
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}`;
+        script.async = true;
+        script.defer = true;
+        document.head.appendChild(script);
+        
+        // Wait for script to load
+        await new Promise((resolve) => {
+          script.onload = resolve;
+        });
+      }
+
+      if (!mapRef.current || !window.google?.maps) return;
+
+      // Initialize map
+      const map = new window.google.maps.Map(mapRef.current, {
+        center: { lat: parseFloat(mapView.center.split(',')[0]), lng: parseFloat(mapView.center.split(',')[1]) },
+        zoom: mapView.zoom,
+        mapTypeId: 'roadmap',
+        disableDefaultUI: false,
+        zoomControl: true,
+        fullscreenControl: false,
+        styles: [
+          { elementType: 'geometry', stylers: [{ color: '#1a1a1a' }] },
+          { elementType: 'labels.text.stroke', stylers: [{ color: '#242f3e' }] },
+          { elementType: 'labels.text.fill', stylers: [{ color: '#746855' }] },
+          {
+            featureType: 'administrative.locality',
+            elementType: 'labels.text.fill',
+            stylers: [{ color: '#d59563' }],
+          },
+          {
+            featureType: 'poi',
+            elementType: 'labels.text.fill',
+            stylers: [{ color: '#d59563' }],
+          },
+          {
+            featureType: 'poi.park',
+            elementType: 'geometry',
+            stylers: [{ color: '#263c3f' }],
+          },
+          {
+            featureType: 'poi.park',
+            elementType: 'labels.text.fill',
+            stylers: [{ color: '#6b9080' }],
+          },
+          {
+            featureType: 'road',
+            elementType: 'geometry',
+            stylers: [{ color: '#38414e' }],
+          },
+          {
+            featureType: 'road',
+            elementType: 'geometry.stroke',
+            stylers: [{ color: '#212a37' }],
+          },
+          {
+            featureType: 'road',
+            elementType: 'labels.text.fill',
+            stylers: [{ color: '#9ca5b3' }],
+          },
+          {
+            featureType: 'road.highway',
+            elementType: 'geometry',
+            stylers: [{ color: '#746855' }],
+          },
+          {
+            featureType: 'road.highway',
+            elementType: 'geometry.stroke',
+            stylers: [{ color: '#1f2835' }],
+          },
+          {
+            featureType: 'road.highway',
+            elementType: 'labels.text.fill',
+            stylers: [{ color: '#f3751ff' }],
+          },
+          {
+            featureType: 'transit',
+            elementType: 'geometry',
+            stylers: [{ color: '#2f3948' }],
+          },
+          {
+            featureType: 'transit.station',
+            elementType: 'labels.text.fill',
+            stylers: [{ color: '#d59563' }],
+          },
+          {
+            featureType: 'water',
+            elementType: 'geometry',
+            stylers: [{ color: '#17263c' }],
+          },
+          {
+            featureType: 'water',
+            elementType: 'labels.text.fill',
+            stylers: [{ color: '#515c6d' }],
+          },
+          {
+            featureType: 'water',
+            elementType: 'labels.text.stroke',
+            stylers: [{ color: '#17263c' }],
+          },
+        ],
+      });
+
+      mapInstanceRef.current = map;
+
+      // Create polygons for each delivery area
+      const createPolygon = (areaId: DeliveryAreaId, bounds: google.maps.LatLngLiteral[], color: string, opacity: number) => {
+        const polygon = new window.google.maps.Polygon({
+          paths: bounds,
+          geodesic: true,
+          strokeColor: color,
+          strokeOpacity: opacity,
+          strokeWeight: 2,
+          fillColor: color,
+          fillOpacity: 0.15,
+          map: map,
+        });
+
+        polygonsRef.current[areaId] = polygon;
+      };
+
+      // Add polygons for each delivery area
+      // Ciudad Juarez (gold)
+      createPolygon('juarez', juarezBounds, '#f0d078', 0.8);
+      // West El Paso (cyan)
+      createPolygon('westElPaso', westElPasoBounds, '#4eb4be', 0.8);
+      // Central El Paso (leaf green)
+      createPolygon('centralElPaso', centralElPasoBounds, '#5ea46b', 0.8);
+    };
+
+    loadGoogleMaps();
+  }, []);
+
+  // Update map view when activeView changes
+  useEffect(() => {
+    if (!mapInstanceRef.current) return;
+
+    const map = mapInstanceRef.current;
+    const center = { lat: parseFloat(mapView.center.split(',')[0]), lng: parseFloat(mapView.center.split(',')[1]) };
+
+    map.setCenter(center);
+    map.setZoom(mapView.zoom);
+
+    // Update polygon visibility/styling
+    Object.entries(polygonsRef.current).forEach(([areaId, polygon]) => {
+      if (areaId === activeView) {
+        // Highlight the active polygon
+        polygon.setOptions({ strokeOpacity: 1, fillOpacity: 0.25 });
+      } else if (activeView === 'overview') {
+        // Show all polygons in overview
+        polygon.setOptions({ strokeOpacity: 0.5, fillOpacity: 0.1 });
+      } else {
+        // Hide other polygons
+        polygon.setOptions({ strokeOpacity: 0.2, fillOpacity: 0.05 });
+      }
+    });
+  }, [activeView, mapView]);
 
   return (
     <section id="delivery-coverage" className="relative mt-8 scroll-mt-24 overflow-hidden rounded-lg border border-gold/25 bg-[#070707] p-0 shadow-gold sm:mt-10">
@@ -178,44 +356,11 @@ const DeliveryArea = () => {
           </div>
         </div>
 
-        <div
-          ref={mapFrameRef}
-          className="relative order-1 min-h-[25rem] border-b border-white/10 bg-ink/70 sm:min-h-[28rem] lg:order-2 lg:min-h-[32rem] lg:border-b-0 lg:border-l"
-        >
-          <iframe
-            key={mapView.id}
-            title={`${t(mapView.titleKey)} Google Maps`}
-            className="absolute inset-0 h-full w-full border-0 saturate-[0.88] contrast-[1.08]"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            src={mapSource}
-            allowFullScreen
-          />
+        <div className="relative order-1 min-h-[25rem] border-b border-white/10 bg-ink/70 sm:min-h-[28rem] lg:order-2 lg:min-h-[32rem] lg:border-b-0 lg:border-l">
+          <div ref={mapRef} className="absolute inset-0 h-full w-full" />
           <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(180deg,rgba(10,10,10,0.38)_0%,rgba(10,10,10,0.04)_28%,rgba(10,10,10,0.06)_62%,rgba(10,10,10,0.64)_100%)]" />
           <div className="absolute inset-0 pointer-events-none ring-1 ring-inset ring-white/10" />
-          {activeView === 'overview' ? (
-            <div className="absolute inset-0" aria-label={t('contact.deliveryZoneLabel')}>
-              {deliveryAreas.map((area) => {
-                const markerPosition = getDeliveryMarkerPosition(deliveryOverview, area, mapSize);
 
-                return (
-                  <button
-                    key={area.id}
-                    type="button"
-                    data-testid={`delivery-zone-${area.id}`}
-                    className={`focus-ring group absolute z-10 grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center opacity-95 transition hover:scale-[1.04] ${area.markerClass}`}
-                    style={{ left: `${markerPosition.left}%`, top: `${markerPosition.top}%` }}
-                    onClick={() => setActiveView(area.id)}
-                    aria-label={t(area.mapLabelKey)}
-                  >
-                    <span className="absolute h-20 w-20 rounded-full border border-current/25 bg-current/10 shadow-[0_0_32px_rgba(255,255,255,0.18)] transition group-hover:scale-110 sm:h-24 sm:w-24" />
-                    <span className="absolute h-9 w-9 rounded-full border border-current/45 bg-ink/80 shadow-2xl backdrop-blur-md" />
-                    <span className="relative h-3 w-3 rounded-full bg-current" />
-                  </button>
-                );
-              })}
-            </div>
-          ) : null}
           <div className="absolute bottom-4 left-4 w-[calc(100%-2rem)] rounded-lg border border-white/10 bg-ink/90 p-3 text-center backdrop-blur sm:bottom-6 sm:left-6 sm:w-80 sm:p-4">
             <div className="flex flex-col items-center gap-3">
               <span className="grid h-11 w-11 place-items-center rounded-full bg-gold/15 text-gold-light">
@@ -248,11 +393,6 @@ const DeliveryArea = () => {
 type DeliveryAreaId = 'juarez' | 'westElPaso' | 'centralElPaso';
 type DeliveryViewId = 'overview' | DeliveryAreaId;
 
-type MapSize = {
-  width: number;
-  height: number;
-};
-
 type DeliveryMapView = {
   id: DeliveryViewId;
   titleKey: string;
@@ -274,6 +414,30 @@ const deliveryOverview: DeliveryMapView = {
   center: '31.7608,-106.4970',
   zoom: 10,
 };
+
+// Ciudad Juarez delivery boundary (gold)
+const juarezBounds: google.maps.LatLngLiteral[] = [
+  { lat: 31.7500, lng: -106.2500 },
+  { lat: 31.7500, lng: -106.6000 },
+  { lat: 31.6300, lng: -106.6000 },
+  { lat: 31.6300, lng: -106.2500 },
+];
+
+// West El Paso delivery boundary (cyan)
+const westElPasoBounds: google.maps.LatLngLiteral[] = [
+  { lat: 31.8800, lng: -106.6500 },
+  { lat: 31.8800, lng: -106.4500 },
+  { lat: 31.7500, lng: -106.4500 },
+  { lat: 31.7500, lng: -106.6500 },
+];
+
+// Central El Paso delivery boundary (leaf green)
+const centralElPasoBounds: google.maps.LatLngLiteral[] = [
+  { lat: 31.8200, lng: -106.4500 },
+  { lat: 31.8200, lng: -106.3500 },
+  { lat: 31.7000, lng: -106.3500 },
+  { lat: 31.7000, lng: -106.4500 },
+];
 
 const deliveryAreas: (DeliveryMapView & {
   id: DeliveryAreaId;
@@ -321,79 +485,6 @@ const deliveryAreas: (DeliveryMapView & {
     markerClass: 'text-leaf-light',
   },
 ];
-
-const useElementSize = (elementRef: RefObject<HTMLElement>): MapSize => {
-  const [size, setSize] = useState<MapSize>({ width: 0, height: 0 });
-
-  useEffect(() => {
-    const element = elementRef.current;
-    if (!element) return;
-
-    const updateSize = () => {
-      const { width, height } = element.getBoundingClientRect();
-      setSize({ width, height });
-    };
-
-    updateSize();
-
-    const observer = new ResizeObserver(updateSize);
-    observer.observe(element);
-
-    return () => observer.disconnect();
-  }, [elementRef]);
-
-  return size;
-};
-
-const getDeliveryMarkerPosition = (overview: DeliveryMapView, area: DeliveryMapView, mapSize: MapSize) => {
-  if (!mapSize.width || !mapSize.height) {
-    return { left: 50, top: 50 };
-  }
-
-  const overviewCenter = projectMapCoordinate(overview.center, overview.zoom);
-  const areaCenter = projectMapCoordinate(area.center, overview.zoom);
-
-  return {
-    left: clampPercentage(50 + ((areaCenter.x - overviewCenter.x) / mapSize.width) * 100),
-    top: clampPercentage(50 + ((areaCenter.y - overviewCenter.y) / mapSize.height) * 100),
-  };
-};
-
-const projectMapCoordinate = (coordinates: string, zoom: number) => {
-  const [latitude, longitude] = coordinates.split(',').map(Number);
-  const sinLatitude = Math.sin((latitude * Math.PI) / 180);
-  const scale = 256 * 2 ** zoom;
-
-  return {
-    x: ((longitude + 180) / 360) * scale,
-    y: (0.5 - Math.log((1 + sinLatitude) / (1 - sinLatitude)) / (4 * Math.PI)) * scale,
-  };
-};
-
-const clampPercentage = (value: number) => Math.min(Math.max(value, 8), 92);
-
-const googleMapsEmbedKey = import.meta.env.VITE_GOOGLE_MAPS_EMBED_API_KEY?.trim();
-
-const buildGoogleMapsEmbedUrl = (area: DeliveryMapView) => {
-  if (googleMapsEmbedKey) {
-    const params = new URLSearchParams({
-      key: googleMapsEmbedKey,
-      center: area.center,
-      zoom: String(area.zoom),
-      maptype: 'roadmap',
-    });
-
-    return `https://www.google.com/maps/embed/v1/view?${params.toString()}`;
-  }
-
-  const params = new URLSearchParams({
-    ll: area.center,
-    z: String(area.zoom),
-    output: 'embed',
-  });
-
-  return `https://maps.google.com/maps?${params.toString()}`;
-};
 
 type FieldProps = {
   label: string;
