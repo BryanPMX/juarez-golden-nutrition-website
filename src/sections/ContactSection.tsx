@@ -1,6 +1,6 @@
 import { Building2, Crosshair, ExternalLink, Mail, MapPin, Navigation, Phone, Route } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import type { ReactNode, RefObject } from 'react';
+import type { ReactNode } from 'react';
 import type { LucideIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -11,6 +11,23 @@ import { useLocale } from '../hooks/useLocale';
 import { BUSINESS, whatsappLink } from '../lib/constants';
 
 declare global {
+  namespace google {
+    namespace maps {
+      class Map {
+        constructor(element: HTMLElement, options: any): void;
+        setCenter(latlng: LatLngLiteral): void;
+        setZoom(zoom: number): void;
+      }
+      class Polygon {
+        constructor(options: any): void;
+        setOptions(options: any): void;
+      }
+      interface LatLngLiteral {
+        lat: number;
+        lng: number;
+      }
+    }
+  }
   interface Window {
     google: {
       maps: {
