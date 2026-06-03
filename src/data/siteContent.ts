@@ -329,7 +329,7 @@ export const kidsBenefits = [
 export const stats = [
   { value: 5, suffix: '', label: { es: 'dias por paquete', en: 'days per package' } },
   { value: 2, suffix: '', label: { es: 'planes disponibles', en: 'available plans' } },
-  { value: 100, suffix: '%', label: { es: 'en Ciudad Juarez', en: 'in Ciudad Juarez' } },
+  { value: 100, suffix: '%', label: { es: 'Orgánico', en: 'in Ciudad Juarez' } },
 ];
 
 export const faqs = [
