@@ -10,30 +10,47 @@ import { plans } from '../data/siteContent';
 import { useLocale } from '../hooks/useLocale';
 import { BUSINESS, whatsappLink } from '../lib/constants';
 
+interface GoogleMapsOptions {
+  center: { lat: number; lng: number };
+  zoom: number;
+  mapTypeId: string;
+  disableDefaultUI: boolean;
+  zoomControl: boolean;
+  fullscreenControl: boolean;
+  styles: Array<{
+    elementType?: string;
+    featureType?: string;
+    stylers: Array<{ [key: string]: string }>;
+  }>;
+}
+
+interface PolygonOptions {
+  paths: Array<{ lat: number; lng: number }>;
+  geodesic: boolean;
+  strokeColor: string;
+  strokeOpacity: number;
+  strokeWeight: number;
+  fillColor: string;
+  fillOpacity: number;
+  map: GoogleMapInstance;
+}
+
+type GoogleMapInstance = {
+  setCenter(latlng: { lat: number; lng: number }): void;
+  setZoom(zoom: number): void;
+};
+
+type GooglePolygonInstance = {
+  setOptions(options: Partial<PolygonOptions>): void;
+};
+
 declare global {
-  namespace google {
-    namespace maps {
-      class Map {
-        constructor(element: HTMLElement, options: any): void;
-        setCenter(latlng: LatLngLiteral): void;
-        setZoom(zoom: number): void;
-      }
-      class Polygon {
-        constructor(options: any): void;
-        setOptions(options: any): void;
-      }
-      interface LatLngLiteral {
-        lat: number;
-        lng: number;
-      }
-    }
-  }
   interface Window {
     google: {
       maps: {
-        Map: any;
-        Polygon: any;
-        LatLngLiteral: any;
+        Map: new (element: HTMLElement, options: GoogleMapsOptions) => GoogleMapInstance;
+        Polygon: new (options: PolygonOptions) => GooglePolygonInstance;
+        LatLngLiteral: { lat: number; lng: number };
       };
     };
   }
@@ -47,6 +64,8 @@ type ContactFormValues = {
   message: string;
   website?: string;
 };
+
+type LatLngLiteral = { lat: number; lng: number };
 
 export const ContactSection = () => {
   const { t } = useTranslation();
@@ -147,8 +166,8 @@ const DeliveryArea = () => {
   const { t } = useTranslation();
   const [activeView, setActiveView] = useState<DeliveryViewId>('overview');
   const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<google.maps.Map | null>(null);
-  const polygonsRef = useRef<Record<DeliveryAreaId, google.maps.Polygon>>({});
+  const mapInstanceRef = useRef<GoogleMapInstance | null>(null);
+  const polygonsRef = useRef<Partial<Record<DeliveryAreaId, GooglePolygonInstance>>>({});
 
   const selectedArea = activeView === 'overview' ? null : deliveryAreas.find((area) => area.id === activeView) ?? deliveryAreas[0];
   const mapView = selectedArea ?? deliveryOverview;
@@ -174,10 +193,11 @@ const DeliveryArea = () => {
 
       if (!mapRef.current || !window.google?.maps) return;
 
-      // Initialize map
+      // Initialize map with overview as default
+      const initialView = deliveryOverview;
       const map = new window.google.maps.Map(mapRef.current, {
-        center: { lat: parseFloat(mapView.center.split(',')[0]), lng: parseFloat(mapView.center.split(',')[1]) },
-        zoom: mapView.zoom,
+        center: { lat: parseFloat(initialView.center.split(',')[0]), lng: parseFloat(initialView.center.split(',')[1]) },
+        zoom: initialView.zoom,
         mapTypeId: 'roadmap',
         disableDefaultUI: false,
         zoomControl: true,
@@ -267,7 +287,7 @@ const DeliveryArea = () => {
       mapInstanceRef.current = map;
 
       // Create polygons for each delivery area
-      const createPolygon = (areaId: DeliveryAreaId, bounds: google.maps.LatLngLiteral[], color: string, opacity: number) => {
+      const createPolygon = (areaId: DeliveryAreaId, bounds: LatLngLiteral[], color: string, opacity: number) => {
         const polygon = new window.google.maps.Polygon({
           paths: bounds,
           geodesic: true,
@@ -298,11 +318,13 @@ const DeliveryArea = () => {
   useEffect(() => {
     if (!mapInstanceRef.current) return;
 
+    const area = activeView === 'overview' ? null : deliveryAreas.find((a) => a.id === activeView) ?? deliveryAreas[0];
+    const view = area ?? deliveryOverview;
     const map = mapInstanceRef.current;
-    const center = { lat: parseFloat(mapView.center.split(',')[0]), lng: parseFloat(mapView.center.split(',')[1]) };
+    const center = { lat: parseFloat(view.center.split(',')[0]), lng: parseFloat(view.center.split(',')[1]) };
 
     map.setCenter(center);
-    map.setZoom(mapView.zoom);
+    map.setZoom(view.zoom);
 
     // Update polygon visibility/styling
     Object.entries(polygonsRef.current).forEach(([areaId, polygon]) => {
@@ -317,7 +339,7 @@ const DeliveryArea = () => {
         polygon.setOptions({ strokeOpacity: 0.2, fillOpacity: 0.05 });
       }
     });
-  }, [activeView, mapView]);
+  }, [activeView]);
 
   return (
     <section id="delivery-coverage" className="relative mt-8 scroll-mt-24 overflow-hidden rounded-lg border border-gold/25 bg-[#070707] p-0 shadow-gold sm:mt-10">
@@ -433,7 +455,7 @@ const deliveryOverview: DeliveryMapView = {
 };
 
 // Ciudad Juarez delivery boundary (gold)
-const juarezBounds: google.maps.LatLngLiteral[] = [
+const juarezBounds: LatLngLiteral[] = [
   { lat: 31.7500, lng: -106.2500 },
   { lat: 31.7500, lng: -106.6000 },
   { lat: 31.6300, lng: -106.6000 },
@@ -441,7 +463,7 @@ const juarezBounds: google.maps.LatLngLiteral[] = [
 ];
 
 // West El Paso delivery boundary (cyan)
-const westElPasoBounds: google.maps.LatLngLiteral[] = [
+const westElPasoBounds: LatLngLiteral[] = [
   { lat: 31.8800, lng: -106.6500 },
   { lat: 31.8800, lng: -106.4500 },
   { lat: 31.7500, lng: -106.4500 },
@@ -449,7 +471,7 @@ const westElPasoBounds: google.maps.LatLngLiteral[] = [
 ];
 
 // Central El Paso delivery boundary (leaf green)
-const centralElPasoBounds: google.maps.LatLngLiteral[] = [
+const centralElPasoBounds: LatLngLiteral[] = [
   { lat: 31.8200, lng: -106.4500 },
   { lat: 31.8200, lng: -106.3500 },
   { lat: 31.7000, lng: -106.3500 },
