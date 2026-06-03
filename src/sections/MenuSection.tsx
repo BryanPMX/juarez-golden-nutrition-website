@@ -3,10 +3,9 @@ import { motion } from 'framer-motion';
 import { MessageCircle } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import heroImage from '../assets/hero-meal-prep.png';
 import { LinkButton } from '../components/ui/Button';
 import { SectionHeading } from '../components/ui/SectionHeading';
-import { adultMeals, kidsDays, plans, type PlanId } from '../data/siteContent';
+import { adultMenus, kidsDays, plans, type PlanId } from '../data/siteContent';
 import { useLocale } from '../hooks/useLocale';
 import { whatsappLink } from '../lib/constants';
 
@@ -81,39 +80,47 @@ export const MenuSection = () => {
           <div className="min-w-0">
             {activePlan === 'adult' ? (
               <div ref={emblaRef} className="overflow-hidden">
-                <div className="flex gap-4">
-                  {adultMeals.map((meal, index) => (
+                <div className="flex gap-4 pb-3">
+                  {adultMenus.map((menu, index) => (
                     <motion.article
-                      key={meal.id}
-                      className="shrink-0 basis-[82%] rounded-lg border border-white/10 bg-ink-card p-4 shadow-2xl transition hover:-translate-y-1 hover:border-gold/50 sm:basis-[48%] lg:basis-[38%]"
-                      initial={{ opacity: 0, y: 20 }}
+                      key={menu.id}
+                      className="shrink-0 basis-[86%] rounded-3xl border border-white/10 bg-ink-card p-5 shadow-2xl transition hover:-translate-y-2 hover:border-gold/40 sm:basis-[52%] lg:basis-[38%]"
+                      initial={{ opacity: 0, y: 24 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.2 }}
-                      transition={{ delay: index * 0.06 }}
+                      viewport={{ once: true, amount: 0.25 }}
+                      transition={{ delay: index * 0.06, duration: 0.45, ease: 'easeOut' }}
+                      whileHover={{ y: -6 }}
                     >
-                      <img
-                        src={heroImage}
-                        alt={meal.name[locale]}
-                        loading="lazy"
-                        className="h-44 w-full rounded-md object-cover"
-                      />
-                      <h4 className="mt-4 font-display text-xl font-bold leading-tight text-white sm:text-2xl">{meal.name[locale]}</h4>
-                      <p className="mt-3 text-xs font-bold uppercase tracking-[0.16em] text-gold">{t('menu.ingredients')}</p>
-                      <p className="mt-2 text-sm leading-6 text-white/70">{meal.ingredients[locale]}</p>
+                      <div className="relative overflow-hidden rounded-3xl bg-white/5 p-4">
+                        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-gold to-leaf opacity-70" />
+                        <div className="relative">
+                          <p className="font-label text-xs font-bold uppercase tracking-[0.18em] text-gold-light">{menu.title[locale]}</p>
+                          <p className="mt-3 text-sm text-white/60">{menu.description[locale]}</p>
+                        </div>
+                      </div>
+                      <div className="mt-5 space-y-4">
+                        {menu.dishes.map((dish) => (
+                          <div key={dish.id} className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+                            <p className="font-semibold text-white">{dish.name[locale]}</p>
+                            <p className="mt-2 text-sm leading-6 text-white/65">{dish.ingredients[locale]}</p>
+                          </div>
+                        ))}
+                      </div>
                     </motion.article>
                   ))}
                 </div>
+                <p className="mt-4 text-sm text-white/50">{locale === 'es' ? 'Desliza para ver todos los menús.' : 'Swipe to explore all menus.'}</p>
               </div>
             ) : (
               <div className="grid gap-4 md:grid-cols-2">
                 {kidsDays.map((day, index) => (
                   <motion.article
                     key={day.id}
-                    className="rounded-lg border border-white/10 bg-ink-card p-5 transition hover:-translate-y-1 hover:border-leaf/50"
+                    className="rounded-3xl border border-white/10 bg-ink-card p-5 transition hover:-translate-y-1 hover:border-leaf/50"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.2 }}
-                    transition={{ delay: index * 0.06 }}
+                    transition={{ delay: index * 0.05, duration: 0.4 }}
                   >
                     <p className="font-label text-xs font-bold uppercase tracking-[0.18em] text-leaf-light">{day.day[locale]}</p>
                     <p className="mt-3 text-base leading-7 text-white/75">{day.items[locale]}</p>

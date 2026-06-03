@@ -29,6 +29,19 @@ export type Meal = {
   plan: PlanId;
 };
 
+export type MenuDish = {
+  id: string;
+  name: LocaleText;
+  ingredients: LocaleText;
+};
+
+export type MenuBoard = {
+  id: string;
+  title: LocaleText;
+  description: LocaleText;
+  dishes: MenuDish[];
+};
+
 export type KidsDay = {
   id: string;
   day: LocaleText;
@@ -88,51 +101,148 @@ export const plans: Plan[] = [
   },
 ];
 
-export const adultMeals: Meal[] = [
+export const adultMenus: MenuBoard[] = [
   {
-    id: 'pasta-bolonesa',
-    plan: 'adult',
-    name: { es: 'Pasta Bolonesa', en: 'Bolognese Pasta' },
-    ingredients: {
-      es: 'Molida de res, pasta penne, salsa marinara, queso, calabacitas, zanahoria, lentejas y naranja.',
-      en: 'Ground beef, penne pasta, marinara sauce, cheese, zucchini, carrot, lentils, and orange.',
+    id: 'menu-1',
+    title: { es: 'Menú 1', en: 'Menu 1' },
+    description: {
+      es: 'Platos frescos y balanceados para iniciar la semana con fuerza.',
+      en: 'Fresh, balanced dishes to start the week strong.',
     },
+    dishes: [
+      {
+        id: 'ensalada-pollo',
+        name: { es: 'Ensalada de Pollo', en: 'Chicken Salad' },
+        ingredients: {
+          es: 'Pechuga de pollo a la plancha, lechuga fresca, aguacate, jitomate cherry y aderezo ligero.',
+          en: 'Grilled chicken, fresh lettuce, avocado, cherry tomato, and light dressing.',
+        },
+      },
+      {
+        id: 'pasta-bolonesa',
+        name: { es: 'Pasta Boloñesa', en: 'Bolognese Pasta' },
+        ingredients: {
+          es: 'Carne molida, pasta penne, salsa marinara casera y queso parmesano.',
+          en: 'Ground beef, penne pasta, homemade marinara, and parmesan cheese.',
+        },
+      },
+      {
+        id: 'pescado-empapelado',
+        name: { es: 'Pescado Empapelado', en: 'Wrapped Fish' },
+        ingredients: {
+          es: 'Filete de tilapia, calabacitas, pimiento morrón, zanahoria y limón.',
+          en: 'Tilapia fillet, zucchini, bell pepper, carrot, and lime.',
+        },
+      },
+      {
+        id: 'albondigas-caseras',
+        name: { es: 'Albóndigas Caseras', en: 'Homemade Meatballs' },
+        ingredients: {
+          es: 'Carne molida con salsa de jitomate, zanahoria y calabacitas.',
+          en: 'Ground beef with tomato sauce, carrot, and zucchini.',
+        },
+      },
+      {
+        id: 'carne-oriental',
+        name: { es: 'Carne Estilo Oriental', en: 'Oriental-style Beef' },
+        ingredients: {
+          es: 'Tiras de carne, brócoli, pimiento morrón, zanahoria y salsa oriental.',
+          en: 'Beef strips, broccoli, bell pepper, carrot, and oriental sauce.',
+        },
+      },
+    ],
   },
   {
-    id: 'ensalada-pollo',
-    plan: 'adult',
-    name: { es: 'Ensalada de Pollo', en: 'Chicken Salad' },
-    ingredients: {
-      es: 'Pechuga de pollo, acelgas, tomate, aguacate, betabel, lechuga romana, pepino y zanahoria.',
-      en: 'Chicken breast, chard, tomato, avocado, beet, romaine lettuce, cucumber, and carrot.',
+    id: 'menu-2',
+    title: { es: 'Menú 2', en: 'Menu 2' },
+    description: {
+      es: 'Combinación tradicional con proteína, verduras y sabores caseros.',
+      en: 'Traditional combination with protein, veggies, and homestyle flavors.',
     },
+    dishes: [
+      {
+        id: 'chiles-rellenos',
+        name: { es: 'Chiles Rellenos de Queso', en: 'Cheese-stuffed Peppers' },
+        ingredients: {
+          es: 'Chile poblano, queso Oaxaca, salsa de jitomate y arroz integral.',
+          en: 'Poblano pepper, Oaxaca cheese, tomato sauce, and brown rice.',
+        },
+      },
+      {
+        id: 'enchiladas-suizas',
+        name: { es: 'Enchiladas Suizas', en: 'Swiss Enchiladas' },
+        ingredients: {
+          es: 'Tortillas de maíz, pollo deshebrado y salsa verde cremosa.',
+          en: 'Corn tortillas, shredded chicken, and creamy green sauce.',
+        },
+      },
+      {
+        id: 'picadillo-res',
+        name: { es: 'Picadillo de Res', en: 'Beef Picadillo' },
+        ingredients: {
+          es: 'Carne molida, papa, zanahoria, chícharos y especias.',
+          en: 'Ground beef, potato, carrot, peas, and spices.',
+        },
+      },
+      {
+        id: 'bistec-cerdo',
+        name: { es: 'Bistec de Cerdo en Chile Pasilla', en: 'Pork Steak in Pasilla Chile' },
+        ingredients: {
+          es: 'Bistec de cerdo, salsa de chile pasilla, arroz integral y calabacitas.',
+          en: 'Pork steak, pasilla chile sauce, brown rice, and zucchini.',
+        },
+      },
+    ],
   },
   {
-    id: 'pescado-empapelado',
-    plan: 'adult',
-    name: { es: 'Pescado Empapelado', en: 'Wrapped Fish' },
-    ingredients: {
-      es: 'Filete de tilapia, zanahoria, calabaza, cebolla, jitomate, aceite de oliva y tostada de maiz.',
-      en: 'Tilapia fillet, carrot, squash, onion, tomato, olive oil, and corn tostada.',
+    id: 'menu-3',
+    title: { es: 'Menú 3', en: 'Menu 3' },
+    description: {
+      es: 'Platos mexicanos con guarniciones ligeras y porciones equilibradas.',
+      en: 'Mexican dishes with light sides and balanced portions.',
     },
-  },
-  {
-    id: 'pechuga-plancha',
-    plan: 'adult',
-    name: { es: 'Pechuga a la Plancha', en: 'Grilled Chicken Breast' },
-    ingredients: {
-      es: 'Pechuga de pollo, aguacate, brocoli, acelga, champinones, betabel y papas en cubos.',
-      en: 'Chicken breast, avocado, broccoli, chard, mushrooms, beet, and diced potatoes.',
-    },
-  },
-  {
-    id: 'albondigas',
-    plan: 'adult',
-    name: { es: 'Albondigas', en: 'Meatballs' },
-    ingredients: {
-      es: 'Carne molida, cebolla, ajo, cilantro, pan molido, huevo, queso mozzarella, zanahoria y ejotes.',
-      en: 'Ground beef, onion, garlic, cilantro, breadcrumbs, egg, mozzarella, carrot, and green beans.',
-    },
+    dishes: [
+      {
+        id: 'pollo-salsa-verde',
+        name: { es: 'Pollo en Salsa Verde', en: 'Chicken in Green Sauce' },
+        ingredients: {
+          es: 'Pechuga de pollo, salsa verde, calabacitas y zanahoria.',
+          en: 'Chicken breast, green sauce, zucchini, and carrot.',
+        },
+      },
+      {
+        id: 'enchiladas-rojas',
+        name: { es: 'Enchiladas Rojas', en: 'Red Enchiladas' },
+        ingredients: {
+          es: 'Tortillas de maíz, pollo deshebrado, salsa roja casera y queso.',
+          en: 'Corn tortillas, shredded chicken, homemade red sauce, and cheese.',
+        },
+      },
+      {
+        id: 'sandwich-pollo',
+        name: { es: 'Sándwich de Muslo de Pollo', en: 'Chicken Thigh Sandwich' },
+        ingredients: {
+          es: 'Pan integral, muslo de pollo, lechuga, jitomate y mayonesa ligera.',
+          en: 'Whole grain bread, chicken thigh, lettuce, tomato, and light mayo.',
+        },
+      },
+      {
+        id: 'enmoladas',
+        name: { es: 'Enmoladas', en: 'Enmoladas' },
+        ingredients: {
+          es: 'Tortillas de maíz con pollo deshebrado y mole tradicional.',
+          en: 'Corn tortillas with shredded chicken and traditional mole.',
+        },
+      },
+      {
+        id: 'fajitas-pollo',
+        name: { es: 'Fajitas de Pollo en Verduras', en: 'Chicken Veggie Fajitas' },
+        ingredients: {
+          es: 'Pollo, pimiento morrón, cebolla, tomate y especias ligeras.',
+          en: 'Chicken, bell pepper, onion, tomato, and light spices.',
+        },
+      },
+    ],
   },
 ];
 
