@@ -404,7 +404,7 @@ type FieldProps = {
 
 const Field = ({ label, error, className = '', children }: FieldProps) => (
   <label className={`block ${className}`}>
-    <span className="mb-2 block text-sm font-bold text-white/80">{label}</span>
+    <span className="mb-2 block text-left text-sm font-bold text-white/80">{label}</span>
     {children}
     {error ? <span className="mt-2 block text-sm text-gold-light">{error}</span> : null}
   </label>

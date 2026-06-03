@@ -41,11 +41,11 @@ export const FaqSection = () => {
                 <button
                   type="button"
                   onClick={() => setActive(open ? -1 : index)}
-                  className="focus-ring relative flex w-full items-center justify-center gap-4 px-12 py-5 text-center"
+                  className="focus-ring flex w-full items-center justify-between gap-4 px-5 py-5 text-left"
                   aria-expanded={open}
                 >
                   <span className="font-bold text-white">{item.question[locale]}</span>
-                  <ChevronDown className={`absolute right-5 h-5 w-5 shrink-0 text-gold-light transition ${open ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`h-5 w-5 shrink-0 text-gold-light transition ${open ? 'rotate-180' : ''}`} />
                 </button>
                 <AnimatePresence initial={false}>
                   {open ? (
@@ -54,7 +54,7 @@ export const FaqSection = () => {
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                     >
-                      <p className="px-5 pb-5 text-center leading-7 text-white/70">{item.answer[locale]}</p>
+                      <p className="px-5 pb-5 text-left leading-7 text-white/70">{item.answer[locale]}</p>
                     </motion.div>
                   ) : null}
                 </AnimatePresence>

@@ -30,24 +30,24 @@ export const ServicesSection = () => {
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ delay: index * 0.12 }}
               >
-                <div className="flex flex-col items-center gap-4">
+                <div className="text-center">
                   <div>
                     <p className="font-label text-xs font-bold uppercase tracking-[0.18em] text-white/50">{plan.brand}</p>
                     <h3 className="mt-2 font-display text-2xl font-bold leading-tight text-white sm:text-3xl">{plan.title[locale]}</h3>
                   </div>
-                  <div className="relative grid h-16 w-16 shrink-0 place-items-center">
-                    <Lottie animationData={nutritionPulse} loop className="absolute inset-0 opacity-70" />
-                    <Icon className={`relative h-7 w-7 ${plan.accent === 'leaf' ? 'text-leaf-light' : 'text-gold-light'}`} />
-                  </div>
                 </div>
-                <p className={`mt-5 font-display text-3xl font-bold sm:mt-6 sm:text-4xl ${plan.accent === 'leaf' ? 'text-leaf-light' : 'text-gold-light'}`}>
+                <p className={`mt-5 flex items-center justify-center gap-3 font-display text-3xl font-bold sm:mt-6 sm:text-4xl ${plan.accent === 'leaf' ? 'text-leaf-light' : 'text-gold-light'}`}>
+                  <span className="relative grid h-12 w-12 shrink-0 place-items-center">
+                    <Lottie animationData={nutritionPulse} loop className="absolute inset-0 opacity-70" />
+                    <Icon className="relative h-6 w-6" />
+                  </span>
                   {plan.price}
                 </p>
-                <p className="mt-1 text-sm font-semibold text-white/60">{plan.duration[locale]}</p>
-                <ul className="mt-6 grid gap-3">
+                <p className="mt-1 text-center text-sm font-semibold text-white/60">{plan.duration[locale]}</p>
+                <ul className="mx-auto mt-6 grid max-w-md gap-3">
                   {plan.features.map((feature) => (
-                    <li key={feature.es} className="flex flex-col items-center gap-2 text-center text-white/75">
-                      <span className={`h-2 w-2 rounded-full ${plan.accent === 'leaf' ? 'bg-leaf-light' : 'bg-gold-light'}`} />
+                    <li key={feature.es} className="flex items-start gap-3 text-left text-white/75">
+                      <span className={`mt-2 h-2 w-2 shrink-0 rounded-full ${plan.accent === 'leaf' ? 'bg-leaf-light' : 'bg-gold-light'}`} />
                       <span>{feature[locale]}</span>
                     </li>
                   ))}

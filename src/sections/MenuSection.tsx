@@ -16,6 +16,7 @@ export const MenuSection = () => {
   const [activePlan, setActivePlan] = useState<PlanId>('adult');
   const [emblaRef] = useEmblaCarousel({ align: 'start', dragFree: true });
   const plan = useMemo(() => plans.find((item) => item.id === activePlan) ?? plans[0], [activePlan]);
+  const PlanIcon = plan.icon;
 
   return (
     <section id="menu" className="relative overflow-hidden bg-[#111111]">
@@ -52,14 +53,15 @@ export const MenuSection = () => {
           >
             <p className="eyebrow">{plan.brand}</p>
             <h3 className="mt-3 font-display text-3xl font-bold leading-tight text-white sm:text-4xl">{plan.title[locale]}</h3>
-            <p className={`mt-4 font-display text-4xl font-bold sm:mt-5 sm:text-5xl ${plan.accent === 'leaf' ? 'text-leaf-light' : 'text-gold-light'}`}>
+            <p className={`mt-4 flex items-center justify-center gap-3 font-display text-4xl font-bold sm:mt-5 sm:text-5xl ${plan.accent === 'leaf' ? 'text-leaf-light' : 'text-gold-light'}`}>
+              <PlanIcon className="h-8 w-8 shrink-0" />
               {plan.price}
             </p>
             <p className="mt-2 text-white/60">{plan.duration[locale]}</p>
             <p className="mt-5 text-base leading-7 text-white/75 sm:text-lg sm:leading-8">{plan.target[locale]}</p>
             <ul className="mt-6 grid gap-3">
               {plan.features.map((feature) => (
-                <li key={feature.es} className="rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-white/75">
+                <li key={feature.es} className="rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-left text-white/75">
                   {feature[locale]}
                 </li>
               ))}
@@ -86,7 +88,7 @@ export const MenuSection = () => {
                   {adultMenus.map((menu, index) => (
                     <motion.article
                       key={menu.id}
-                  className="shrink-0 basis-[86%] rounded-3xl border border-white/10 bg-ink-card p-5 text-center shadow-2xl transition hover:-translate-y-2 hover:border-gold/40 sm:basis-[52%] lg:basis-[38%]"
+                      className="shrink-0 basis-[86%] rounded-3xl border border-white/10 bg-ink-card p-5 text-center shadow-2xl transition hover:-translate-y-2 hover:border-gold/40 sm:basis-[52%] lg:basis-[38%]"
                       initial={{ opacity: 0, y: 24 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, amount: 0.25 }}
