@@ -78,8 +78,8 @@ const MenuPage = () => <MenuSection />;
 
 const ContactPage = () => (
   <>
-    <FaqSection />
     <ContactSection />
+    <FaqSection />
   </>
 );
 
