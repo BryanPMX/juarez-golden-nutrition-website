@@ -11,7 +11,7 @@ const styles: Record<ButtonVariant, string> = {
 };
 
 const base =
-  'focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-bold transition';
+  'focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-3 text-center text-sm font-bold transition';
 
 type Shared = {
   variant?: ButtonVariant;

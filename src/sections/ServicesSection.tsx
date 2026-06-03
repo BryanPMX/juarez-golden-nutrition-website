@@ -30,7 +30,7 @@ export const ServicesSection = () => {
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ delay: index * 0.12 }}
               >
-                <div className="flex items-start justify-between gap-4">
+                <div className="flex flex-col items-center gap-4">
                   <div>
                     <p className="font-label text-xs font-bold uppercase tracking-[0.18em] text-white/50">{plan.brand}</p>
                     <h3 className="mt-2 font-display text-2xl font-bold leading-tight text-white sm:text-3xl">{plan.title[locale]}</h3>
@@ -46,9 +46,9 @@ export const ServicesSection = () => {
                 <p className="mt-1 text-sm font-semibold text-white/60">{plan.duration[locale]}</p>
                 <ul className="mt-6 grid gap-3">
                   {plan.features.map((feature) => (
-                    <li key={feature.es} className="flex items-center gap-3 text-white/75">
+                    <li key={feature.es} className="flex flex-col items-center gap-2 text-center text-white/75">
                       <span className={`h-2 w-2 rounded-full ${plan.accent === 'leaf' ? 'bg-leaf-light' : 'bg-gold-light'}`} />
-                      {feature[locale]}
+                      <span>{feature[locale]}</span>
                     </li>
                   ))}
                 </ul>

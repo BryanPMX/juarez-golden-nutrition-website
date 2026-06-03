@@ -53,15 +53,15 @@ export const ContactSection = () => {
           <div>
             <SectionHeading eyebrow={t('contact.eyebrow')} title={t('contact.title')} copy={t('contact.copy')} />
             <div className="mt-8 grid gap-4">
-              <a className="focus-ring flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] p-4" href={`tel:${BUSINESS.phoneE164}`}>
+              <a className="focus-ring flex flex-col items-center justify-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] p-4 text-center sm:flex-row" href={`tel:${BUSINESS.phoneE164}`}>
                 <Phone className="h-5 w-5 text-gold-light" />
                 <span>{BUSINESS.phoneDisplay}</span>
               </a>
-              <a className="focus-ring flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] p-4" href={`mailto:${BUSINESS.email}`}>
+              <a className="focus-ring flex flex-col items-center justify-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] p-4 text-center sm:flex-row" href={`mailto:${BUSINESS.email}`}>
                 <Mail className="h-5 w-5 text-gold-light" />
-                <span>{BUSINESS.email}</span>
+                <span className="break-all">{BUSINESS.email}</span>
               </a>
-              <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] p-4">
+              <div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-white/10 bg-white/[0.04] p-4 text-center sm:flex-row">
                 <MapPin className="h-5 w-5 text-gold-light" />
                 <span>{BUSINESS.location}</span>
               </div>
@@ -127,21 +127,21 @@ const DeliveryArea = () => {
   return (
     <section id="delivery-coverage" className="relative mt-8 scroll-mt-24 overflow-hidden rounded-lg border border-gold/25 bg-[#070707] p-0 shadow-gold sm:mt-10">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(240,208,120,0.22),transparent_22rem),radial-gradient(circle_at_76%_24%,rgba(78,180,190,0.18),transparent_24rem),radial-gradient(circle_at_82%_78%,rgba(94,164,107,0.18),transparent_22rem)]" />
-      <div className="relative grid gap-0 lg:grid-cols-[0.92fr_1.08fr]">
+      <div className="relative grid gap-0 text-center lg:grid-cols-[0.92fr_1.08fr]">
         <div className="order-2 flex flex-col justify-between gap-6 p-5 sm:p-8 lg:order-1 lg:p-10">
           <div>
             <p className="eyebrow">{t('contact.deliveryEyebrow')}</p>
             <h3 className="mt-3 font-display text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
               {t('contact.deliveryTitle')}
             </h3>
-            <p className="mt-4 max-w-xl text-base leading-7 text-white/72 sm:mt-5 sm:text-lg sm:leading-8">{t('contact.deliveryCopy')}</p>
+            <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-white/72 sm:mt-5 sm:text-lg sm:leading-8">{t('contact.deliveryCopy')}</p>
           </div>
 
           <div className="grid gap-2" aria-label={t('contact.deliveryZoneLabel')}>
             <button
               type="button"
               data-testid="delivery-overview"
-              className={`focus-ring flex items-center justify-between rounded-lg border px-4 py-3 text-left transition ${
+              className={`focus-ring flex flex-col items-center justify-center gap-3 rounded-lg border px-4 py-3 text-center transition sm:flex-row ${
                 activeView === 'overview'
                   ? 'border-cyan-200/60 bg-cyan-200/[0.12] text-white shadow-gold'
                   : 'border-white/10 bg-white/[0.04] text-white/72 hover:border-white/25 hover:bg-white/[0.07]'
@@ -149,7 +149,7 @@ const DeliveryArea = () => {
               onClick={() => setActiveView('overview')}
               aria-pressed={activeView === 'overview'}
             >
-              <span>
+              <span className="min-w-0">
                 <span className="block text-sm font-bold">{t(deliveryOverview.titleKey)}</span>
                 <span className="mt-1 block text-xs uppercase tracking-[0.14em] text-white/45">{t(deliveryOverview.labelKey)}</span>
               </span>
@@ -160,7 +160,7 @@ const DeliveryArea = () => {
                 key={area.id}
                 type="button"
                 data-testid={`delivery-option-${area.id}`}
-                className={`focus-ring flex items-center justify-between rounded-lg border px-4 py-3 text-left transition ${
+                className={`focus-ring flex flex-col items-center justify-center gap-3 rounded-lg border px-4 py-3 text-center transition sm:flex-row ${
                   activeView === area.id
                     ? 'border-gold/70 bg-gold/15 text-white shadow-gold'
                     : 'border-white/10 bg-white/[0.04] text-white/72 hover:border-white/25 hover:bg-white/[0.07]'
@@ -168,7 +168,7 @@ const DeliveryArea = () => {
                 onClick={() => setActiveView(area.id)}
                 aria-pressed={activeView === area.id}
               >
-                <span>
+                <span className="min-w-0">
                   <span className="block text-sm font-bold">{t(area.titleKey)}</span>
                   <span className="mt-1 block text-xs uppercase tracking-[0.14em] text-white/45">{t(area.labelKey)}</span>
                 </span>
@@ -216,8 +216,8 @@ const DeliveryArea = () => {
               })}
             </div>
           ) : null}
-          <div className="absolute bottom-4 left-4 w-[calc(100%-2rem)] rounded-lg border border-white/10 bg-ink/90 p-3 backdrop-blur sm:bottom-6 sm:left-6 sm:w-80 sm:p-4">
-            <div className="flex items-center gap-3">
+          <div className="absolute bottom-4 left-4 w-[calc(100%-2rem)] rounded-lg border border-white/10 bg-ink/90 p-3 text-center backdrop-blur sm:bottom-6 sm:left-6 sm:w-80 sm:p-4">
+            <div className="flex flex-col items-center gap-3">
               <span className="grid h-11 w-11 place-items-center rounded-full bg-gold/15 text-gold-light">
                 <SelectedAreaIcon className="h-5 w-5" />
               </span>

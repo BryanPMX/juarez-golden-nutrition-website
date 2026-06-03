@@ -12,8 +12,8 @@ export const AboutSection = () => {
     <section id="about" className="relative overflow-hidden border-y border-gold/20 bg-ink">
       <FoodParticles preset="section" />
       <div className="relative z-10 mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-14 lg:px-8">
-        <div className="grid gap-8 lg:grid-cols-[0.95fr_1.25fr] lg:items-center">
-          <div>
+        <div className="mx-auto grid max-w-5xl gap-8 text-center">
+          <div className="mx-auto max-w-3xl">
             <p className="eyebrow">{t('about.label')}</p>
             <h2 className="mt-3 font-display text-3xl font-bold leading-tight text-gold-light sm:text-4xl lg:text-5xl">{t('about.tagline')}</h2>
           </div>
@@ -29,7 +29,7 @@ export const AboutSection = () => {
                   viewport={{ once: true, amount: 0.5 }}
                   transition={{ delay: index * 0.08 }}
                 >
-                  <Icon className="h-6 w-6 text-gold-light" aria-hidden="true" />
+                  <Icon className="mx-auto h-6 w-6 text-gold-light" aria-hidden="true" />
                   <p className="mt-3 text-sm font-bold leading-snug text-white">{pillar.label[locale]}</p>
                 </motion.div>
               );

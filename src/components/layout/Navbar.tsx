@@ -27,7 +27,7 @@ export const Navbar = () => {
             alt="Golden Nutrition"
             className="h-12 w-12 rounded-lg border border-gold/30 object-cover shadow-lg shadow-black/25 sm:h-14 sm:w-14"
           />
-          <span className="hidden text-left sm:block">
+            <span className="hidden text-center sm:block">
             <span className="block font-display text-xl font-bold leading-none text-white">Golden Nutrition</span>
             <span className="text-xs uppercase tracking-[0.2em] text-gold">Ciudad Juarez</span>
           </span>
@@ -75,7 +75,7 @@ export const Navbar = () => {
                 to={item.path}
                 onClick={() => setOpen(false)}
                 className={({ isActive }) =>
-                  `focus-ring rounded-lg px-3 py-3 text-left font-semibold transition hover:bg-white/10 ${
+                  `focus-ring rounded-lg px-3 py-3 text-center font-semibold transition hover:bg-white/10 ${
                     isActive ? 'bg-gold/10 text-gold-light' : 'text-white/80'
                   }`
                 }
@@ -83,7 +83,7 @@ export const Navbar = () => {
                 {item.label[locale]}
               </NavLink>
             ))}
-            <div className="mt-3 flex items-center justify-between gap-3">
+            <div className="mt-3 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <LanguageToggle />
               <LinkButton href={orderHref} target="_blank" rel="noreferrer" icon={<MessageCircle className="h-4 w-4" />}>
                 {t('common.orderNow')}

@@ -30,7 +30,7 @@ export const HeroSection = () => {
       </div>
 
       <div className="section-shell relative z-10 flex min-h-[calc(100vh-5rem)] items-center">
-        <div className="max-w-3xl">
+        <div className="mx-auto max-w-3xl text-center">
           <motion.p
             className="eyebrow"
             initial={{ opacity: 0, y: 16 }}
@@ -40,7 +40,7 @@ export const HeroSection = () => {
             {t('hero.eyebrow')}
           </motion.p>
           <motion.h1
-            className="mt-4 max-w-3xl font-display text-4xl font-bold leading-[1.06] text-white sm:mt-5 sm:text-6xl lg:text-7xl"
+            className="mx-auto mt-4 max-w-3xl font-display text-4xl font-bold leading-[1.06] text-white sm:mt-5 sm:text-6xl lg:text-7xl"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.1 }}
@@ -48,7 +48,7 @@ export const HeroSection = () => {
             {t('hero.title')}
           </motion.h1>
           <motion.p
-            className="mt-5 max-w-2xl text-base leading-7 text-white/75 sm:mt-6 sm:text-xl sm:leading-8"
+            className="mx-auto mt-5 max-w-2xl text-base leading-7 text-white/75 sm:mt-6 sm:text-xl sm:leading-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.18 }}
@@ -57,7 +57,7 @@ export const HeroSection = () => {
           </motion.p>
 
           <motion.div
-            className="mt-7 flex flex-col gap-3 sm:mt-8 sm:flex-row"
+            className="mt-7 flex flex-col items-center justify-center gap-3 sm:mt-8 sm:flex-row"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.25 }}
@@ -76,7 +76,7 @@ export const HeroSection = () => {
           </motion.div>
 
           <motion.div
-            className="mt-7 grid max-w-2xl grid-cols-1 gap-3 sm:mt-8 sm:grid-cols-3"
+            className="mx-auto mt-7 grid max-w-2xl grid-cols-1 gap-3 sm:mt-8 sm:grid-cols-3"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.32 }}
@@ -91,7 +91,7 @@ export const HeroSection = () => {
             ))}
           </motion.div>
 
-          <div className="mt-7 flex flex-wrap gap-3 text-sm font-semibold text-white/75 sm:mt-8">
+          <div className="mt-7 flex flex-wrap justify-center gap-3 text-sm font-semibold text-white/75 sm:mt-8">
             <span className="rounded-full border border-gold/30 bg-ink/70 px-4 py-2">{t('hero.adult')}</span>
             <span className="rounded-full border border-leaf/40 bg-ink/70 px-4 py-2">{t('hero.kids')}</span>
           </div>

@@ -29,7 +29,7 @@ export const MenuSection = () => {
               key={item.id}
               type="button"
               onClick={() => setActivePlan(item.id)}
-              className={`focus-ring rounded-full px-5 py-3 text-sm font-bold transition ${
+              className={`focus-ring rounded-full px-5 py-3 text-center text-sm font-bold transition ${
                 activePlan === item.id
                   ? item.accent === 'leaf'
                     ? 'bg-leaf text-ink'
@@ -86,7 +86,7 @@ export const MenuSection = () => {
                   {adultMenus.map((menu, index) => (
                     <motion.article
                       key={menu.id}
-                      className="shrink-0 basis-[86%] rounded-3xl border border-white/10 bg-ink-card p-5 shadow-2xl transition hover:-translate-y-2 hover:border-gold/40 sm:basis-[52%] lg:basis-[38%]"
+                  className="shrink-0 basis-[86%] rounded-3xl border border-white/10 bg-ink-card p-5 text-center shadow-2xl transition hover:-translate-y-2 hover:border-gold/40 sm:basis-[52%] lg:basis-[38%]"
                       initial={{ opacity: 0, y: 24 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, amount: 0.25 }}
@@ -118,7 +118,7 @@ export const MenuSection = () => {
                 {kidsDays.map((day, index) => (
                   <motion.article
                     key={day.id}
-                    className="rounded-3xl border border-white/10 bg-ink-card p-5 transition hover:-translate-y-1 hover:border-leaf/50"
+                    className="rounded-3xl border border-white/10 bg-ink-card p-5 text-center transition hover:-translate-y-1 hover:border-leaf/50"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.2 }}

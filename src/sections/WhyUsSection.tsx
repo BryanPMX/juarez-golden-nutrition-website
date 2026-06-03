@@ -28,13 +28,13 @@ export const WhyUsSection = () => {
             return (
               <motion.article
                 key={item.title.es}
-                className="rounded-lg border border-white/10 bg-white/[0.045] p-4 sm:p-5"
+                className="rounded-lg border border-white/10 bg-white/[0.045] p-4 text-center sm:p-5"
                 initial={{ opacity: 0, y: 18 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ delay: index * 0.08 }}
               >
-                <Icon className="h-7 w-7 text-gold-light" />
+                <Icon className="mx-auto h-7 w-7 text-gold-light" />
                 <h3 className="mt-4 font-display text-xl font-bold leading-tight text-white sm:text-2xl">{item.title[locale]}</h3>
                 <p className="mt-3 text-sm leading-6 text-white/65">{item.text[locale]}</p>
               </motion.article>
@@ -48,7 +48,7 @@ export const WhyUsSection = () => {
             {kidsBenefits.map((benefit) => {
               const Icon = benefit.icon;
               return (
-                <div key={benefit.label.es} className="flex items-center gap-3 rounded-lg bg-ink/50 p-4">
+                <div key={benefit.label.es} className="flex flex-col items-center gap-3 rounded-lg bg-ink/50 p-4 text-center">
                   <Icon className="h-6 w-6 shrink-0 text-leaf-light" />
                   <p className="text-sm font-bold text-white/80">{benefit.label[locale]}</p>
                 </div>
