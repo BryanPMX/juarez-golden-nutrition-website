@@ -51,14 +51,14 @@ export const MenuSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.3 }}
           >
-            <p className="eyebrow">{plan.brand}</p>
-            <h3 className="mt-3 font-display text-3xl font-bold leading-tight text-white sm:text-4xl">{plan.title[locale]}</h3>
-            <p className={`mt-4 flex items-center justify-center gap-3 font-display text-4xl font-bold sm:mt-5 sm:text-5xl ${plan.accent === 'leaf' ? 'text-leaf-light' : 'text-gold-light'}`}>
+            <p className="eyebrow text-left">{plan.brand}</p>
+            <h3 className="mt-3 text-left font-display text-3xl font-bold leading-tight text-white sm:text-4xl">{plan.title[locale]}</h3>
+            <p className={`mt-4 flex items-center justify-start gap-3 text-left font-display text-4xl font-bold sm:mt-5 sm:text-5xl ${plan.accent === 'leaf' ? 'text-leaf-light' : 'text-gold-light'}`}>
               <PlanIcon className="h-8 w-8 shrink-0" />
               {plan.price}
             </p>
-            <p className="mt-2 text-white/60">{plan.duration[locale]}</p>
-            <p className="mt-5 text-base leading-7 text-white/75 sm:text-lg sm:leading-8">{plan.target[locale]}</p>
+            <p className="mt-2 text-left text-white/60">{plan.duration[locale]}</p>
+            <p className="mt-5 text-left text-base leading-7 text-white/75 sm:text-lg sm:leading-8">{plan.target[locale]}</p>
             <ul className="mt-6 grid gap-3">
               {plan.features.map((feature) => (
                 <li key={feature.es} className="rounded-lg border border-white/10 bg-white/[0.04] px-4 py-3 text-left text-white/75">
