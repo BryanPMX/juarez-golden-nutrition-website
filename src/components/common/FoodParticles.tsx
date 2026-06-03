@@ -57,25 +57,72 @@ export const FoodParticles = ({ preset = 'section' }: FoodParticlesProps) => {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const particles = particlePresets[preset];
 
-  useEffect(() => {
-    if (!rootRef.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const pushParticle = (particle: HTMLElement) => {
+    const root = rootRef.current;
+    if (!root) return;
 
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const rootRect = root.getBoundingClientRect();
+    const particleRect = particle.getBoundingClientRect();
+    const particleCenterX = particleRect.left + particleRect.width / 2;
+    const particleCenterY = particleRect.top + particleRect.height / 2;
+    const rootCenterX = rootRect.left + rootRect.width / 2;
+    const rootCenterY = rootRect.top + rootRect.height / 2;
+    const directionX = particleCenterX >= rootCenterX ? 1 : -1;
+    const rawDirectionY = particleCenterY - rootCenterY;
+    const directionY = rawDirectionY === 0 ? -1 : rawDirectionY / Math.abs(rawDirectionY);
+    const edgePadding = 18;
+    const targetCenterX =
+      directionX > 0
+        ? rootRect.right - particleRect.width * 0.18
+        : rootRect.left + particleRect.width * 0.18;
+    const targetCenterY = gsap.utils.clamp(
+      rootRect.top + edgePadding + particleRect.height / 2,
+      rootRect.bottom - edgePadding - particleRect.height / 2,
+      particleCenterY + directionY * Math.max(140, rootRect.height * 0.22),
+    );
+
+    gsap.killTweensOf(particle);
+    gsap.to(particle, {
+      x: Number(gsap.getProperty(particle, 'x')) + targetCenterX - particleCenterX,
+      y: Number(gsap.getProperty(particle, 'y')) + targetCenterY - particleCenterY,
+      rotate: Number(gsap.getProperty(particle, 'rotate')) + directionX * 95,
+      scale: 0.95,
+      duration: prefersReducedMotion ? 0 : 0.65,
+      ease: 'back.out(1.45)',
+      overwrite: true,
+    });
+    gsap.to(particle, {
+      scale: 1,
+      duration: prefersReducedMotion ? 0 : 0.25,
+      delay: prefersReducedMotion ? 0 : 0.48,
+      ease: 'sine.out',
+    });
+  };
+
+  useEffect(() => {
+    if (!rootRef.current) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const particleElements = rootRef.current.querySelectorAll<HTMLElement>('[data-food-particle]');
+
     const ctx = gsap.context(() => {
       particleElements.forEach((particle, index) => {
         const config = particles[index];
         if (!config) return;
 
-        gsap.to(particle, {
-          x: config.xRange,
-          y: config.yRange,
-          rotate: config.rotation,
-          duration: config.duration,
-          delay: config.delay,
-          repeat: -1,
-          yoyo: true,
-          ease: 'sine.inOut',
-        });
+        if (!prefersReducedMotion) {
+          gsap.to(particle, {
+            x: config.xRange,
+            y: config.yRange,
+            rotate: config.rotation,
+            duration: config.duration,
+            delay: config.delay,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut',
+          });
+        }
       });
     }, rootRef);
 
@@ -85,18 +132,20 @@ export const FoodParticles = ({ preset = 'section' }: FoodParticlesProps) => {
   return (
     <div
       ref={rootRef}
-      className="pointer-events-none absolute inset-0 overflow-hidden [mask-image:radial-gradient(circle_at_center,black_12%,black_76%,transparent_100%)]"
-      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 z-20 overflow-hidden [mask-image:radial-gradient(circle_at_center,black_12%,black_76%,transparent_100%)]"
     >
       {particles.map((particle) => (
-        <span
+        <button
+          type="button"
           key={`${preset}-${particle.emoji}-${particle.top}-${particle.left}`}
           data-food-particle
-          className={`absolute rounded-full border border-white/10 text-white/90 shadow-[0_18px_50px_rgba(0,0,0,0.28)] will-change-transform ${particle.sizeClassName} ${particle.alphaClassName} ${particle.blurClassName}`}
+          className={`pointer-events-auto absolute cursor-pointer rounded-full border border-white/10 text-white/90 shadow-[0_18px_50px_rgba(0,0,0,0.28)] outline-none transition hover:border-gold/40 focus-visible:border-gold focus-visible:ring-2 focus-visible:ring-gold/70 will-change-transform ${particle.sizeClassName} ${particle.alphaClassName} ${particle.blurClassName}`}
           style={{ top: particle.top, left: particle.left }}
+          aria-label="Move food bubble away"
+          onClick={(event) => pushParticle(event.currentTarget)}
         >
           {particle.emoji}
-        </span>
+        </button>
       ))}
     </div>
   );
