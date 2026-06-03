@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { AnimatedCounter } from '../components/ui/AnimatedCounter';
+import { FoodParticles } from '../components/common/FoodParticles';
 import { SectionHeading } from '../components/ui/SectionHeading';
 import { differentiators, kidsBenefits, stats } from '../data/siteContent';
 import { useLocale } from '../hooks/useLocale';
@@ -12,7 +13,8 @@ export const WhyUsSection = () => {
   return (
     <section id="why-us" className="relative overflow-hidden bg-ink">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_72%_20%,rgba(94,164,107,0.22),transparent_26rem)]" />
-      <div className="section-shell">
+      <FoodParticles preset="section" />
+      <div className="section-shell relative z-10">
         <SectionHeading eyebrow={t('why.eyebrow')} title={t('why.title')} />
         <div className="mt-8 grid gap-4 sm:mt-10 md:grid-cols-3">
           {stats.map((stat) => (

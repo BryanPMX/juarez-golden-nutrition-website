@@ -17,7 +17,7 @@ export const HeroSection = () => {
 
   return (
     <section id="home" className="relative min-h-screen overflow-hidden pt-20">
-      <FoodParticles />
+      <FoodParticles preset="hero" />
       <div className="absolute inset-0 -z-10">
         <img
           src={heroImage}
@@ -29,7 +29,7 @@ export const HeroSection = () => {
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-ink to-transparent" />
       </div>
 
-      <div className="section-shell flex min-h-[calc(100vh-5rem)] items-center">
+      <div className="section-shell relative z-10 flex min-h-[calc(100vh-5rem)] items-center">
         <div className="max-w-3xl">
           <motion.p
             className="eyebrow"

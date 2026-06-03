@@ -1,6 +1,7 @@
 import Lottie from 'lottie-react';
 import { motion } from 'framer-motion';
 import nutritionPulse from '../assets/lottie/nutritionPulse.json';
+import { FoodParticles } from '../components/common/FoodParticles';
 import { SectionHeading } from '../components/ui/SectionHeading';
 import { plans } from '../data/siteContent';
 import { useLocale } from '../hooks/useLocale';
@@ -11,8 +12,9 @@ export const ServicesSection = () => {
   const { locale } = useLocale();
 
   return (
-    <section id="services" className="bg-ink">
-      <div className="section-shell">
+    <section id="services" className="relative overflow-hidden bg-ink">
+      <FoodParticles preset="section" />
+      <div className="section-shell relative z-10">
         <SectionHeading eyebrow={t('services.eyebrow')} title={t('services.title')} copy={t('services.copy')} />
         <div className="mt-8 grid gap-5 sm:mt-12 md:grid-cols-2">
           {plans.map((plan, index) => {

@@ -2,6 +2,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { motion } from 'framer-motion';
 import { MessageCircle } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { FoodParticles } from '../components/common/FoodParticles';
 import { useTranslation } from 'react-i18next';
 import { LinkButton } from '../components/ui/Button';
 import { SectionHeading } from '../components/ui/SectionHeading';
@@ -17,8 +18,9 @@ export const MenuSection = () => {
   const plan = useMemo(() => plans.find((item) => item.id === activePlan) ?? plans[0], [activePlan]);
 
   return (
-    <section id="menu" className="bg-[#111111]">
-      <div className="section-shell">
+    <section id="menu" className="relative overflow-hidden bg-[#111111]">
+      <FoodParticles preset="calm" />
+      <div className="section-shell relative z-10">
         <SectionHeading eyebrow={t('menu.eyebrow')} title={t('menu.title')} align="center" />
 
         <div className="mx-auto mt-7 inline-flex rounded-full border border-white/10 bg-ink p-1 sm:mt-8">

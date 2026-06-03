@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { FoodParticles } from '../components/common/FoodParticles';
 import { trustPillars } from '../data/siteContent';
 import { useLocale } from '../hooks/useLocale';
 import { useTranslation } from 'react-i18next';
@@ -8,8 +9,9 @@ export const AboutSection = () => {
   const { locale } = useLocale();
 
   return (
-    <section id="about" className="border-y border-gold/20 bg-ink">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-14 lg:px-8">
+    <section id="about" className="relative overflow-hidden border-y border-gold/20 bg-ink">
+      <FoodParticles preset="section" />
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-14 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-[0.95fr_1.25fr] lg:items-center">
           <div>
             <p className="eyebrow">{t('about.label')}</p>

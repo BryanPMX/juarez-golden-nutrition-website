@@ -4,6 +4,7 @@ import type { ReactNode, RefObject } from 'react';
 import type { LucideIcon } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { FoodParticles } from '../components/common/FoodParticles';
 import { SectionHeading } from '../components/ui/SectionHeading';
 import { plans } from '../data/siteContent';
 import { useLocale } from '../hooks/useLocale';
@@ -45,8 +46,9 @@ export const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="bg-ink">
-      <div className="section-shell">
+    <section id="contact" className="relative overflow-hidden bg-ink">
+      <FoodParticles preset="section" />
+      <div className="section-shell relative z-10">
         <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
           <div>
             <SectionHeading eyebrow={t('contact.eyebrow')} title={t('contact.title')} copy={t('contact.copy')} />

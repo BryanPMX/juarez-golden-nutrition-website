@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown, Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FoodParticles } from '../components/common/FoodParticles';
 import { SectionHeading } from '../components/ui/SectionHeading';
 import { faqs } from '../data/siteContent';
 import { useLocale } from '../hooks/useLocale';
@@ -19,8 +20,9 @@ export const FaqSection = () => {
   }, [locale, query]);
 
   return (
-    <section id="faq" className="bg-[#111111]">
-      <div className="section-shell">
+    <section id="faq" className="relative overflow-hidden bg-[#111111]">
+      <FoodParticles preset="section" />
+      <div className="section-shell relative z-10">
         <SectionHeading eyebrow={t('faq.eyebrow')} title={t('faq.title')} align="center" />
         <label className="mx-auto mt-8 flex max-w-xl items-center gap-3 rounded-full border border-white/10 bg-ink px-5 py-3">
           <Search className="h-5 w-5 text-gold-light" />
